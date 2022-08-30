@@ -180,7 +180,8 @@ const Profile = () => {
             type="text"
             labelText={NIC_Text}
             name="nic"
-=======
+
+
 import { useState } from 'react'
 import { FormRow, Alert } from '../../components'
 import { useAppContext } from '../../context/appContext'
@@ -273,9 +274,11 @@ const Profile =  () => {
             labelText='NIC'
             name='nic'
 
+
             value={nic}
             handleChange={(e) => setNic(e.target.value)}
           />
+
 
 
           {user.type === "Student" && (
@@ -409,7 +412,8 @@ const Profile =  () => {
           <button className="btn btn-block" type="submit" disabled={isLoading}>
             {isLoading ? "Please Wait..." : "save changes"}
           </button>
-=======
+
+
         {/* <div>
             <div className='form-row'>
             <div> <label htmlFor={'Select'} className='form-label'>
@@ -528,10 +532,14 @@ const Profile =  () => {
           </button>
 
 
+
         </div>
       </form>
       <br></br>
       <div>
+
+
+
 
         <br />
         <br />
@@ -586,7 +594,8 @@ const Profile =  () => {
 };
 
 export default Profile;
-=======
+
+
       <br /><br />
       <div>
         <h3>Upload Profile Picture</h3>
@@ -618,3 +627,4 @@ export default Profile;
 }
 
 export default Profile
+
