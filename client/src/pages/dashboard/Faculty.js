@@ -4,8 +4,10 @@ import ImageContainer from "../../components/ImageContainer";
 const Faculty = () => {
     return (
       <>
-        <ImageContainer/>
-       
+        <div>
+          <ImageContainer/>
+        </div>
+
       </>
     )
   }

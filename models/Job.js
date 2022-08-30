@@ -27,6 +27,16 @@ const JobSchema = new mongoose.Schema(
       default: 'my city',
       required: true,
     },
+    requirement: {
+      type: String,
+      default: ''
+    },
+    startDate: {
+      type: String
+    },
+    endDate: {
+      type: String
+    },
     createdBy: {
       type: mongoose.Types.ObjectId,
       ref: 'User',

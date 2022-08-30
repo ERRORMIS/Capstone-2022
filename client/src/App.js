@@ -8,6 +8,8 @@ import {
   AddJob,
 } from "./pages/dashboard";
 import AcademicStaff from "./pages/dashboard/AcademicStaff";
+import AlumniList from "./pages/dashboard/AlumniList";
+import PartnerList from "./pages/dashboard/PartnerList";
 import Faculty from "./pages/dashboard/Faculty";
 import ForgotPasswordScreen from "./pages/ForgotPasswordScreen";
 import ResetPasswordScreen from "./pages/ResetPasswordScreen";
@@ -29,6 +31,8 @@ function App() {
           <Route path="profile" element={<Profile />} />
           <Route path="faculty" element={<Faculty />} />
           <Route path="academic-staff" element={<AcademicStaff />} />
+          <Route path="alumni-list" element={<AlumniList />} />
+          <Route path="partner-list" element={<PartnerList />} />
         </Route>
         <Route path="/login" element={< Register />} />
         <Route path="/register" element={< RegisterPage />} />

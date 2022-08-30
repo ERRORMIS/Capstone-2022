@@ -1,10 +1,12 @@
 import Wrapper from '../assets/wrappers/JobInfo'
 
-const JobInfo = ({ icon, text }) => {
+const JobInfo = ({ icon, text, label }) => {
   return (
     <Wrapper>
-      <span className='icon'>{icon}</span>
-      <span className='text'>{text}</span>
+      
+      <p><span className='icon'>{icon}</span></p>
+      <p><b>{label}:-</b> </p>
+      <p><span className='text'>{text}</span></p>
     </Wrapper>
   )
 }
