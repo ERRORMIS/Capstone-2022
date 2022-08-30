@@ -8,6 +8,8 @@ import { EditorState } from 'draft-js';
 import { convertToHTML } from 'draft-convert';
 // import DOMPurify from 'dompurify';
 
+
+//Add a new Project Function
 const AddJob = () => {
   const {
     isLoading,

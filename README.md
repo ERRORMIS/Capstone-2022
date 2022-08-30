@@ -1,6 +1,6 @@
 # SLIIT MIS
 
-#### Track Your Job Search
+#### Track Your Project Search
 
 
 #### Support
