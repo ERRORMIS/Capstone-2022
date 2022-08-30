@@ -9,6 +9,7 @@ import Alumni from  '../models/alumni_model.js';
 import Partner from '../models/partner_model.js';
 import Incubator from '../models/incubator_model.js';
 
+
 const register = async (req, res) => {
 
   const { name, email, password } = req.body
