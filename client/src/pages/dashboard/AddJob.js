@@ -1,6 +1,12 @@
+import { useState } from "react";
 import { FormRow, FormRowSelect, Alert } from '../../components'
 import { useAppContext } from '../../context/appContext'
 import Wrapper from '../../assets/wrappers/DashboardFormPage'
+import { Editor } from "react-draft-wysiwyg";
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import { EditorState } from 'draft-js';
+import { convertToHTML } from 'draft-convert';
+// import DOMPurify from 'dompurify';
 
 const AddJob = () => {
   const {
@@ -15,15 +21,44 @@ const AddJob = () => {
     // jobTypeOptions,
     status,
     statusOptions,
+    projectRequirement,
     handleChange,
     clearValues,
+    startDate,
     createJob,
+    endDate,
     editJob,
-  } = useAppContext()
+    requirement
+  } = useAppContext();
+
+  const [editorState, setEditorState] = useState(
+    () => EditorState.createEmpty(),
+  );
+
+  const  [convertedContent, setConvertedContent] = useState(null);
+
+  const handleEditorChange = (state) => {
+    setEditorState(state);
+    convertContentToHTML();
+    
+  }
+  const convertContentToHTML = () => {
+
+    let currentContentAsHTML = convertToHTML(editorState.getCurrentContent());
+    setConvertedContent(currentContentAsHTML);
+    console.log(convertedContent);
+    
+
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault()
+    const name = 'description'
+    const value = convertedContent
+    handleChange({ name , value })
 
+    
+    console.log(convertedContent);
     if (!title || !owner || !description) {
       displayAlert()
       return
@@ -39,6 +74,7 @@ const AddJob = () => {
     const value = e.target.value
     handleChange({ name, value })
   }
+
 
   return (
     <Wrapper>
@@ -61,13 +97,30 @@ const AddJob = () => {
             handleChange={handleJobInput}
           />
           {/* location */}
-          <FormRow
+          {/* <FormRow
             type='textarea'
             labelText='description'
             name='description'
             value={description}
             handleChange={handleJobInput}
+          /> */}
+
+          <FormRow
+            type='date'
+            labelText='Start Date'
+            name='startDate'
+            value={startDate}
+            handleChange={handleJobInput}
           />
+
+          <FormRow
+            type='date'
+            labelText='End Date'
+            name='endDate'
+            value={endDate}
+            handleChange={handleJobInput}
+          />
+
           {/* job status */}
           <FormRowSelect
             name='status'
@@ -75,6 +128,26 @@ const AddJob = () => {
             handleChange={handleJobInput}
             list={statusOptions}
           />
+
+          <FormRowSelect
+            labelText='Project Requirement'
+            name='requirement'
+            value={requirement}
+            handleChange={handleJobInput}
+            list={projectRequirement}
+          />
+
+          <div className="form-row">
+          <label className='form-label'>description</label>
+              <Editor
+                toolbarClassName="toolbarClassName"
+                wrapperClassName="wrapperClassName"
+                editorClassName="editorClassName"
+                editorState={editorState}
+                onEditorStateChange={handleEditorChange}
+                wrapperStyle={{ width: 500, border: "1px solid black" }}
+              />
+          </div>
       
           {/* btn container */}
           <div className='btn-container'>
@@ -96,6 +169,9 @@ const AddJob = () => {
               clear
             </button>
           </div>
+
+
+
         </div>
       </form>
     </Wrapper>

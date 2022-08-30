@@ -20,7 +20,7 @@ const JobsContainer = () => {
   } = useAppContext()
 
   useEffect(() => {
-    getJobs()
+    getJobs() 
     // eslint-disable-next-line
   }, [page, search, searchStatus, searchType, sort])
   

@@ -13,7 +13,12 @@ const Job = ({
   jobType,
   createdAt,
   status,
+  startDate, 
+  endDate,
+  requirement,
 }) => {
+
+  
   const { setEditJob, deleteJob } = useAppContext()
 
   let date = moment(createdAt)
@@ -29,10 +34,13 @@ const Job = ({
       </header>
       <div className='content'>
         <div className='content-center'>
-          <JobInfo icon={<FaLocationArrow />} text={description} />
-          <JobInfo icon={<FaCalendarAlt />} text={date} />
-          <JobInfo icon={<FaBriefcase />} text={jobType} />
-          <div className={`status ${status}`}>{status}</div>
+          <div className='row'>
+            <JobInfo icon={<FaLocationArrow />} text={description} label="Description" />
+            <JobInfo icon={<FaCalendarAlt />} text={startDate} label="Start Date"/>
+            <JobInfo icon={<FaCalendarAlt />} text={endDate} label="End Date"/>
+            <JobInfo icon={<FaBriefcase />} text={requirement} label="Requirement"/>
+            <div className={`status ${status}`}>{status}</div>
+          </div>
         </div>
         <footer>
           <div className='actions'>

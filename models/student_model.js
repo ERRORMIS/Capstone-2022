@@ -3,6 +3,10 @@ import jwt from 'jsonwebtoken'
 
 const StudentSchema = new mongoose.Schema(
 {
+    studentID: {
+        type: String,
+        default: ''
+    },
     name: {
         type: String,
     },
@@ -25,6 +29,14 @@ const StudentSchema = new mongoose.Schema(
         type: String,
         default: ''
     },
+    contactNo: {
+        type: String,
+        default: ''
+    },
+    faculty: {
+        type: String,
+        default: ''
+    }
     // createdBy: {
     //     type: mongoose.Types.ObjectId,
     //     ref: 'User',

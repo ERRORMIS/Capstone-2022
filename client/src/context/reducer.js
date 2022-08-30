@@ -25,6 +25,12 @@ import {
   SHOW_STATS_SUCCESS,
   CLEAR_FILTERS,
   CHANGE_PAGE,
+  GET_STAFFLIST_BEGIN,
+  GET_STAFFLIST_SUCCESS,
+  GET_ALUMNI_BEGIN,
+  GET_ALUMNI_SUCCESS,
+  GET_PARTNER_BEGIN,
+  GET_PARTNER_SUCCESS,
 } from "./actions";
 
 import { initialState } from "./appContext";
@@ -125,9 +131,12 @@ const reducer = (state, action) => {
       editJobId: "",
       title: "",
       owner: "",
-      description: state.userLocation,
+      description: "",
       jobType: "full-time",
       status: "pending",
+      startDate: "",
+      endDate: "",
+      requirement: "",
     };
 
     return {
@@ -171,7 +180,7 @@ const reducer = (state, action) => {
   }
   if (action.type === SET_EDIT_JOB) {
     const job = state.jobs.find((job) => job._id === action.payload.id);
-    const { _id, title, owner, description, jobType, status } = job;
+    const { _id, title, owner, description, jobType, status, startDate, endDate, requirement } = job;
     return {
       ...state,
       isEditing: true,
@@ -181,6 +190,9 @@ const reducer = (state, action) => {
       description,
       jobType,
       status,
+      startDate, 
+      endDate, 
+      requirement
     };
   }
   if (action.type === DELETE_JOB_BEGIN) {
@@ -233,9 +245,45 @@ const reducer = (state, action) => {
       searchType: "all",
       sort: "latest",
     };
-  }
+  } 
   if (action.type === CHANGE_PAGE) {
     return { ...state, page: action.payload.page };
+  }
+  if (action.type === GET_STAFFLIST_BEGIN) {
+    return { ...state, isLoading: true, showAlert: false };
+  }
+  if (action.type === GET_STAFFLIST_SUCCESS) {
+    return {
+      ...state,
+      isLoading: false,
+      staffList: action.payload.staffList,
+      totalJobs: action.payload.totalJobs,
+      numOfPages: action.payload.numOfPages,
+    };
+  }
+  if (action.type === GET_ALUMNI_BEGIN) {
+    return { ...state, isLoading: true, showAlert: false };
+  }
+  if (action.type === GET_ALUMNI_SUCCESS) {
+    return {
+      ...state,
+      isLoading: false,
+      alumniList: action.payload.alumniList,
+      totalJobs: action.payload.totalJobs,
+      numOfPages: action.payload.numOfPages,
+    };
+  }
+  if (action.type === GET_PARTNER_BEGIN) {
+    return { ...state, isLoading: true, showAlert: false };
+  }
+  if (action.type === GET_PARTNER_SUCCESS) {
+    return {
+      ...state,
+      isLoading: false,
+      partnerList: action.payload.partnerList,
+      totalJobs: action.payload.totalJobs,
+      numOfPages: action.payload.numOfPages,
+    };
   }
   throw new Error(`no such action : ${action.type}`);
 };

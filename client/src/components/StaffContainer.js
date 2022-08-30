@@ -4,66 +4,40 @@ import { bootstrap } from "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./StaffContainer.css";
 
-export default class StaffContainer extends Component {
-  render() {
+// export default class StaffContainer extends Component {
+const StaffContainer = ({name,lastName,email, contactNo,address,department,jobRole,img,nic }) => {
+
+    let new_img = "profile_img.jpg";
+
+    if(img !== ''){
+        new_img = img
+    }
+ 
     return (
       <Wrapper>
-        <div class="card w-75">
-          <div class="card-body">
-          <img  class="profile-img" src="https://www.sliit.lk/profile/uploads/Prof_Rahula_Attalage.jpg" alt="Sunflower" />
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">
-              With supporting text below as a natural lead-in to additional
-              content.
-            </p>
-            <a href="/" class="btn btn-primary">
-              Button
-            </a>
-          </div>
-        </div>
-        <div class="card w-75">
-          <div class="card-body">
-          <img class="profile-img" src="https://www.sliit.lk/profile/uploads/Prof_Rahula_Attalage.jpg" alt=""/>
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">
-              With supporting text below as a natural lead-in to additional
-              content.
-            </p>
-            <a href="/" class="btn btn-primary">
-              Button
-            </a>
-          </div>
-        </div>
-        <div class="card w-75">
-          <div class="card-body">
-          <img  class="profile-img" src="https://www.sliit.lk/profile/uploads/scan_image_1505718382-Professor_Mahesha_Kapurubandara1.jpg" alt=""/>
-          <h1 class="profile-name">Prof. Nimal Rajapakse</h1>
-            <p class="card-text">
-              With supporting text below as a natural lead-in to additional
-              content.
-            </p>
-            <a href="/" class="btn btn-primary btn-profile">
-              Button
-            </a>
-          </div>
-        </div>
-        <div class="card w-75">
-          <div class="card-body">
-              <img  class="profile-img" src="https://www.sliit.lk/profile/uploads/deans-photo.jpg" alt=""/>
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">
-              With supporting text below as a natural lead-in to additional
-              content.
-            </p>
-            <a href="/" class="btn btn-primary">
-              Button
-            </a>
-          </div>
-        </div>
-        <div>
- 
+        <div class="card col-md-6">
+          <div>
+              <div>
+                <img class="profile-img" src={`uploads/${new_img}`} alt="Sunflower" />
+                <h5>{name} {lastName}</h5>
+              </div>
+                <div className="row">
+                    <p>Email: {email}</p>
+                    <p>NIC: {nic}</p>
+                    <p>Contact NO: {contactNo}</p>
+                    <p>Address: {address}</p>
+                    <p>Department: {department}</p>
+                    <p>JobRole: {jobRole}</p>
+                    <a href="/" class="btn btn-primary">
+                      View
+                    </a>
+                </div>
+              </div>
+            </div>
+          <div>
         </div>
       </Wrapper>
     );
-  }
 }
+
+export default StaffContainer

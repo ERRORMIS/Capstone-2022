@@ -10,7 +10,7 @@ export default class ImageContainer extends Component {
       <Wrapper>
         <div
           id="carouselExampleIndicators"
-          class="carousel slide"
+          class="carousel slide w-75"
           data-bs-ride="carousel"
         >
           <div class="carousel-indicators">
@@ -39,7 +39,7 @@ export default class ImageContainer extends Component {
           <div class="carousel-inner">
             <div class="carousel-item active">
               <img
-                class="image-boxes-img img-responsive "
+                class="mw-100"
                 src="https://static.sliit.lk/wp-content/uploads/2020/01/06040608/SLIIT-BSc-Hons-in-Information-Technology-Specializing-in-Data-Science.jpg"
                 alt=""
                 title=""
@@ -60,6 +60,7 @@ export default class ImageContainer extends Component {
               />
             </div>
           </div>
+
           <button
             class="carousel-control-prev"
             type="button"
@@ -80,68 +81,159 @@ export default class ImageContainer extends Component {
           </button>
         </div>
         <div>
-        <div class="row row-cols-1 row-cols-md-3 g-4">
-  <div class="col">
-    <div class="card h-100">
-      <img src="https://static.sliit.lk/wp-content/uploads/2021/09/08150615/Biological-Science-1.jpg" class="card-img-top" alt="..."/>
-      <div class="card-body">
-        <h5 class="card-title">Humanities &amp; Sciences</h5>
-        <p class="card-text">The Faculty of Humanities and Sciences strives to develop professionals in the areas of Education, Science, Mathematics and Nursing.</p>
-        <a href="/" class="btn btn-fullcolor ca-more js-ca-more" tabindex="0">MORE <span class="glyphicon glyphicon-chevron-right kl-icon-white"></span></a>
-      </div>
-    </div>
-  </div>
-  <div class="col">
-    <div class="card h-100">
-      <img src="https://static.sliit.lk/wp-content/uploads/2019/12/10043705/BSc-Hons-in-Information-Technology-Specializing-in-Information-Technology-SLIIT-cover.jpg" class="card-img-top" alt="..."/>
-      <div class="card-body">
-        <h3 class="card-title">Computing &amp;</h3>
-        <p class="card-text">Offering world class higher education in computing technology and producing skilled and able graduates to fulfill the dynamic needs of the fast changing world.</p>
-        <a href="/" class="btn btn-fullcolor ca-more js-ca-more" tabindex="0">MORE <span class="glyphicon glyphicon-chevron-right kl-icon-white"></span></a>
-      </div>
-    </div>
-  </div>
-  <div class="col">
-    <div class="card h-100">
-      <img src="https://www.sliit.lk/wp-content/uploads/2017/11/civil-engineering-2.jpg" class="card-img-top" alt="..."/>
-      <div class="card-body">
-        <h3 class="card-title">Engineering</h3>
-        <p class="card-text">The educate center of the engineers and scientists in charge of tomorrow’s technology for sustainability and innovation</p>
-        <a href="/" class="btn btn-fullcolor ca-more js-ca-more" tabindex="0">MORE <span class="glyphicon glyphicon-chevron-right kl-icon-white"></span></a>
-      </div>
-    </div>
-  </div>
-  <div class="col">
-    <div class="card h-100">
-      <img src="https://www.sliit.lk/wp-content/uploads/2017/10/sliit-research-business-faculty.jpg" class="card-img-top" alt="..."/>
-      <div class="card-body">
-        <h3 class="card-title">Business</h3>
-        <p class="card-text">The place where future business leaders, strategic managers, innovative entrepreneurs are forged via up-to-date knowledge and interdisciplinary thinking.</p>
-        <a href="/" class="btn btn-fullcolor ca-more js-ca-more" tabindex="0">MORE <span class="glyphicon glyphicon-chevron-right kl-icon-white"></span></a>
-      </div>
-    </div>
-  </div>
-  <div class="col">
-    <div class="card h-100">
-      <img src="https://static.sliit.lk/wp-content/uploads/2020/09/16074429/BSc-Hons-in-Architecture-img.jpg" class="card-img-top" alt="..."/>
-      <div class="card-body">
-        <h3 class="card-title">Architecture</h3>
-        <p class="card-text">This professional pathway is ideal for creative people with sensitivity, imagination and ability to appreciate the technical aspects of building Construction.</p>
-        <a href="/" class="btn btn-fullcolor ca-more js-ca-more" tabindex="0">MORE <span class="glyphicon glyphicon-chevron-right kl-icon-white"></span></a>
-      </div>
-    </div>
-  </div>
-  <div class="col">
-    <div class="card h-100">
-      <img src="https://www.cahm.lk/wp-content/uploads/2021/01/SFP_2115-scaled.jpg" class="card-img-top" alt="..."/>
-      <div class="card-body">
-      <h3 class="ca-title" itemprop="headline">Hospitality &amp; Culinary</h3>
-        <p class="card-text">The William Angliss Institute @ SLIIT, is a joint venture between William Angliss Institute, Melbourne and is based in the SLIIT campus, Malabe.</p>
-        <a href="/" class="btn btn-fullcolor ca-more js-ca-more" tabindex="0">MORE <span class="glyphicon glyphicon-chevron-right kl-icon-white"></span></a>
-      </div>
-    </div>
-  </div>
-</div>
+          <div class="row row-cols-1 row-cols-md-3 g-4">
+            <div class="col">
+              <div class="card h-100">
+                <img
+                  src="https://static.sliit.lk/wp-content/uploads/2021/09/08150615/Biological-Science-1.jpg"
+                  class="card-img-top"
+                  alt="..."
+                />
+                <div class="card-body">
+                  <h5 class="card-title">Humanities &amp; Sciences</h5>
+                  <p class="card-text">
+                    The Faculty of Humanities and Sciences strives to develop
+                    professionals in the areas of Education, Science,
+                    Mathematics and Nursing.
+                  </p>
+                  <a
+                    href="/"
+                    class="btn btn-fullcolor ca-more js-ca-more"
+                    tabindex="0"
+                  >
+                    MORE{" "}
+                    <span class="glyphicon glyphicon-chevron-right kl-icon-white"></span>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="col">
+              <div class="card h-100">
+                <img
+                  src="https://static.sliit.lk/wp-content/uploads/2019/12/10043705/BSc-Hons-in-Information-Technology-Specializing-in-Information-Technology-SLIIT-cover.jpg"
+                  class="card-img-top"
+                  alt="..."
+                />
+                <div class="card-body">
+                  <h3 class="card-title">Computing &amp;</h3>
+                  <p class="card-text">
+                    Offering world class higher education in computing
+                    technology and producing skilled and able graduates to
+                    fulfill the dynamic needs of the fast changing world.
+                  </p>
+                  <a
+                    href="/"
+                    class="btn btn-fullcolor ca-more js-ca-more"
+                    tabindex="0"
+                  >
+                    MORE{" "}
+                    <span class="glyphicon glyphicon-chevron-right kl-icon-white"></span>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="col">
+              <div class="card h-100">
+                <img
+                  src="https://www.sliit.lk/wp-content/uploads/2017/11/civil-engineering-2.jpg"
+                  class="card-img-top"
+                  alt="..."
+                />
+                <div class="card-body">
+                  <h3 class="card-title">Engineering</h3>
+                  <p class="card-text">
+                    The educate center of the engineers and scientists in charge
+                    of tomorrow’s technology for sustainability and innovation
+                  </p>
+                  <a
+                    href="/"
+                    class="btn btn-fullcolor ca-more js-ca-more"
+                    tabindex="0"
+                  >
+                    MORE{" "}
+                    <span class="glyphicon glyphicon-chevron-right kl-icon-white"></span>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="col">
+              <div class="card h-100">
+                <img
+                  src="https://www.sliit.lk/wp-content/uploads/2017/10/sliit-research-business-faculty.jpg"
+                  class="card-img-top"
+                  alt="..."
+                />
+                <div class="card-body">
+                  <h3 class="card-title">Business</h3>
+                  <p class="card-text">
+                    The place where future business leaders, strategic managers,
+                    innovative entrepreneurs are forged via up-to-date knowledge
+                    and interdisciplinary thinking.
+                  </p>
+                  <a
+                    href="/"
+                    class="btn btn-fullcolor ca-more js-ca-more"
+                    tabindex="0"
+                  >
+                    MORE{" "}
+                    <span class="glyphicon glyphicon-chevron-right kl-icon-white"></span>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="col">
+              <div class="card h-100">
+                <img
+                  src="https://static.sliit.lk/wp-content/uploads/2020/09/16074429/BSc-Hons-in-Architecture-img.jpg"
+                  class="card-img-top"
+                  alt="..."
+                />
+                <div class="card-body">
+                  <h3 class="card-title">Architecture</h3>
+                  <p class="card-text">
+                    This professional pathway is ideal for creative people with
+                    sensitivity, imagination and ability to appreciate the
+                    technical aspects of building Construction.
+                  </p>
+                  <a
+                    href="/"
+                    class="btn btn-fullcolor ca-more js-ca-more"
+                    tabindex="0"
+                  >
+                    MORE{" "}
+                    <span class="glyphicon glyphicon-chevron-right kl-icon-white"></span>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="col">
+              <div class="card h-100">
+                <img
+                  src="https://www.cahm.lk/wp-content/uploads/2021/01/SFP_2115-scaled.jpg"
+                  class="card-img-top"
+                  alt="..."
+                />
+                <div class="card-body">
+                  <h3 class="ca-title" itemprop="headline">
+                    Hospitality &amp; Culinary
+                  </h3>
+                  <p class="card-text">
+                    The William Angliss Institute @ SLIIT, is a joint venture
+                    between William Angliss Institute, Melbourne and is based in
+                    the SLIIT campus, Malabe.
+                  </p>
+                  <a
+                    href="/"
+                    class="btn btn-fullcolor ca-more js-ca-more"
+                    tabindex="0"
+                  >
+                    MORE{" "}
+                    <span class="glyphicon glyphicon-chevron-right kl-icon-white"></span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </Wrapper>
     );
