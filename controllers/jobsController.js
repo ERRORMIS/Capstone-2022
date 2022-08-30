@@ -8,7 +8,10 @@ import {
 import checkPermissions from '../utils/checkPermissions.js'
 import mongoose from 'mongoose'
 import moment from 'moment'
+
+
 const createJob = async (req, res) => {
+
   const {title, owner } = req.body
 
   if (!title || !owner) {
@@ -17,9 +20,11 @@ const createJob = async (req, res) => {
   req.body.createdBy = req.user.userId
   const job = await Job.create(req.body)
   res.status(StatusCodes.CREATED).json({ job })
+  
 }
 
 const getAllJobs = async (req, res) => {
+   
   const { status, jobType, sort, search } = req.query
 
   const queryObject = {
@@ -70,7 +75,9 @@ const getAllJobs = async (req, res) => {
   const numOfPages = Math.ceil(totalJobs / limit)
 
   res.status(StatusCodes.OK).json({ jobs, totalJobs, numOfPages })
+
 }
+
 const updateJob = async (req, res) => {
   const { id: jobId } = req.params
   const { owner, title } = req.body

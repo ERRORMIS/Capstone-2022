@@ -1,13 +1,14 @@
 import StaffContainer from "../../components/StaffContainer";
+import PartnerComponent from "../../components/partner.component";
 import { useAppContext } from '../../context/appContext'
 import { useEffect } from 'react'
 import Loading from '../../components/Loading'
 
 
-const AcademicStaff = () => {
-  const {
-    getStaffList,
-    staffList,
+const PartnerList = () => {
+  const { 
+    getPartnerList,
+    partnerList,
     isLoading,
     page,
     totalJobs,
@@ -19,7 +20,7 @@ const AcademicStaff = () => {
   } = useAppContext()
 
   useEffect(() => {
-    getStaffList() 
+    getPartnerList() 
     // eslint-disable-next-line
   }, [page, search, searchStatus, searchType, sort])
 
@@ -33,17 +34,17 @@ const AcademicStaff = () => {
 
     return (
       <>
-        <div className="col-md-12"><h1>List of Staff</h1></div>
+        <div className="col-md-12"><h1>List of Partner</h1></div>
           <h5>
-            {totalJobs} Staff{staffList.length > 1 && 's'} found
+            {totalJobs} Partner{partnerList.length > 1 && 's'} found
           </h5>
         <div className="col-md-12">
-          {staffList.map((job) => {
-          return <StaffContainer key={job._id} {...job} />
+          {partnerList.map((job) => {
+          return <PartnerComponent key={job._id} {...job} />
         })}
         </div>
       </>
     )
   }
   
-  export default AcademicStaff;
+export default PartnerList;

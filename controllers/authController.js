@@ -9,7 +9,6 @@ import Alumni from  '../models/alumni_model.js';
 import Partner from '../models/partner_model.js';
 import Incubator from '../models/incubator_model.js';
 
-
 const register = async (req, res) => {
 
   const { name, email, password } = req.body
@@ -204,6 +203,11 @@ const login_new = async (req, res) => {
               lastName: get_user.lastName,
               gender: get_user.gender,
               nic: get_user.nic,
+              gender: get_user.gender,
+              contactNo: get_user.contactNo,
+              faculty: get_user.faculty,
+              studentID: get_user.studentID,
+              
           },
           token,
           location: get_user.name,
@@ -268,7 +272,8 @@ const login_new = async (req, res) => {
               img: get_user.img,
               lastName: get_user.lastName,
               nic: get_user.nic,
-              location: get_user.location
+              location: get_user.location,
+              partnerType: get_user.partnerType
           },
           token,
           location: get_user.name,

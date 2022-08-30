@@ -29,6 +29,12 @@ import {
   SHOW_STATS_SUCCESS,
   CLEAR_FILTERS,
   CHANGE_PAGE,
+  GET_STAFFLIST_BEGIN,
+  GET_STAFFLIST_SUCCESS,
+  GET_ALUMNI_BEGIN,
+  GET_ALUMNI_SUCCESS,
+  GET_PARTNER_BEGIN,
+  GET_PARTNER_SUCCESS,
 } from './actions'
 
 const token = localStorage.getItem('token')
@@ -52,8 +58,12 @@ const initialState = {
   jobTypeOptions: ['full-time', 'part-time', 'remote', 'internship'],
   jobType: '',
   statusOptions: ['ongoing', 'declined', 'pending'],
+  projectRequirement: ['Computer', 'IT', 'Machine Learning'],
   status: 'pending',
   jobs: [],
+  staffList: [],
+  alumniList: [],
+  partnerList: [],
   totalJobs: 0,
   numOfPages: 1,
   page: 1,
@@ -65,6 +75,9 @@ const initialState = {
   sort: 'latest',
   sortOptions: ['latest', 'oldest', 'a-z', 'z-a'],
   getUserDetails: [],
+  startDate: '',
+  endDate: '',
+  requirement: ''
 }
 
 const AppContext = React.createContext()
@@ -195,6 +208,7 @@ const AppProvider = ({ children }) => {
 
     dispatch({ type: UPDATE_USER_BEGIN })
     try {
+
       const { data } = await authFetch.post('/user/updateUser', currentUser)
 
       const { user, location, token } = data
@@ -226,15 +240,19 @@ const AppProvider = ({ children }) => {
   }
 
   const createJob = async () => {
+
     dispatch({ type: CREATE_JOB_BEGIN })
     try {
-      const {title, owner,description, jobType, status } = state
+      const {title, owner,description, jobType, status, startDate, endDate, requirement } = state
       await authFetch.post('/jobs', {
         title,
         owner,
         description,
         jobType,
         status,
+        startDate,
+        endDate,
+        requirement
       })
       dispatch({ type: CREATE_JOB_SUCCESS })
       dispatch({ type: CLEAR_VALUES })
@@ -272,6 +290,70 @@ const AppProvider = ({ children }) => {
       logoutUser()
     }
     clearAlert()
+  }
+
+  const getStaffList = async () => {
+
+    let url = `/user/getAllStaff`
+    dispatch({ type: GET_STAFFLIST_BEGIN })
+    try {
+      const { data } = await authFetch(url)
+      const { staffList, totalJobs, numOfPages } = data
+      dispatch({
+        type: GET_STAFFLIST_SUCCESS,
+        payload: {
+          staffList,
+          totalJobs,
+          numOfPages, 
+        },
+      })
+    } catch (error) {
+      logoutUser()
+    }
+    clearAlert()
+  }
+
+  const getAlumniList = async () => {
+
+    let url = `/user/getAllAlumni`
+    dispatch({ type: GET_ALUMNI_BEGIN })
+    try {
+      const { data } = await authFetch(url)
+      const { alumniList, totalJobs, numOfPages } = data
+      dispatch({
+        type: GET_ALUMNI_SUCCESS,
+        payload: {
+          alumniList,
+          totalJobs,
+          numOfPages, 
+        },
+      })
+    } catch (error) {
+      logoutUser()
+    }
+    clearAlert()
+  }
+
+  const getPartnerList = async () => {
+
+    let url = `/user/getAllPartner`
+    dispatch({ type: GET_PARTNER_BEGIN })
+    try {
+      const { data } = await authFetch(url)
+      const { partnerList, totalJobs, numOfPages } = data
+      dispatch({
+        type: GET_PARTNER_SUCCESS,
+        payload: {
+          partnerList,
+          totalJobs,
+          numOfPages, 
+        },
+      })
+    } catch (error) {
+      logoutUser()
+    }
+    clearAlert()
+
   }
 
   const setEditJob = (id) => {
@@ -366,6 +448,41 @@ const AppProvider = ({ children }) => {
     dispatch({ type: CHANGE_PAGE, payload: { page } })
   }
 
+  const uploadProfile = async (currentUser) => {
+
+    dispatch({ type: UPDATE_USER_BEGIN })
+    try {
+
+      const { selectedImage, id, type } = currentUser;
+      const formData = new FormData();
+      formData.append("photo", selectedImage); 
+      formData.append("id", id);
+      formData.append("type", type); 
+
+      const { data } = await authFetch.post('/user/updateProfileImg', formData)
+
+      const { user, location, token } = data
+
+      dispatch({
+        type: UPDATE_USER_SUCCESS,
+        payload: { user, location, token },
+      })
+      addUserToLocalStorage({ user, location, token })
+    } catch (error) {
+      if (error.response.status !== 401) {
+        dispatch({
+          type: UPDATE_USER_ERROR,
+          payload: { msg: error.response.data.msg },
+        })
+      }
+    }
+
+    clearAlert()
+    
+  }
+
+
+
   return (
     <AppContext.Provider
       value={{
@@ -379,6 +496,9 @@ const AppProvider = ({ children }) => {
         clearValues,
         createJob,
         getJobs,
+        getStaffList,
+        getAlumniList,
+        getPartnerList,
         setEditJob,
         deleteJob,
         editJob,
@@ -386,7 +506,8 @@ const AppProvider = ({ children }) => {
         clearFilters,
         changePage,
         loginUser,
-        getUserDataByID
+        getUserDataByID,
+        uploadProfile
       }}
     >
       {children}
