@@ -113,6 +113,7 @@ const AddJob = () => {
             name='startDate'
             value={startDate}
             handleChange={handleJobInput}
+
           />
 
           <FormRow
@@ -122,6 +123,8 @@ const AddJob = () => {
             value={endDate}
             handleChange={handleJobInput}
           />
+
+
 
           {/* job status */}
           <FormRowSelect
