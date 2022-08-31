@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { FormRow, Alert } from "../../components";
 import { useAppContext } from "../../context/appContext";
@@ -220,49 +219,139 @@ const Profile =  () => {
   
 
   const handleSubmit = (e) => {
-
-
-    e.preventDefault()
+    e.preventDefault();
     if (!name || !email || !lastName || !nic) {
-      displayAlert()
-      return
+      displayAlert();
+      return;
     }
 
-    if(type === "Student"){
-      updateUser({ name, email, lastName, nic, type, id, gender })
-    }else if(type === "Staff"){
-      updateUser({ name, email, lastName, nic, type, id, contactNo, address, department, jobRole })
-    }else if(type === "Alumni"){
-      updateUser({ name, email, lastName, nic, type, id, contactNo, address, company, jobTitle, graduatedYear })
-    }else if(type === "Partner"){
-      updateUser({ name, email, lastName, nic, type, id, location })
+    if (type === "Student") {
+      updateUser({
+        name,
+        email,
+        lastName,
+        nic,
+        type,
+        id,
+        gender,
+        studentID,
+        faculty,
+        contactNo,
+      });
+    } else if (type === "Staff") {
+      updateUser({
+        name,
+        email,
+        lastName,
+        nic,
+        type,
+        id,
+        contactNo,
+        address,
+        department,
+        jobRole,
+      });
+    } else if (type === "Alumni") {
+      updateUser({
+        name,
+        email,
+        lastName,
+        nic,
+        type,
+        id,
+        contactNo,
+        address,
+        company,
+        jobTitle,
+        graduatedYear,
+      });
+    } else if (type === "Partner") {
+      updateUser({ name, email, lastName, nic, type, id, location });
     }
+  };
 
+  const uploadProfileImage = async () => {
+
+    await uploadProfile({
+      selectedImage,
+      id,
+      type
+    })
+
+    await setImgFile(null);
     
 
-  }
+  
 
 
+  };
 
   return (
     <Wrapper>
-      <form className='form' onSubmit={handleSubmit}>
+      <form className="form" onSubmit={handleSubmit}>
         <h3>profile</h3>
         {showAlert && <Alert />}
-        <div className='form-center'>
+        <div className="form-center">
+          {user.type === "Student" && (
+            <FormRow
+              type="text"
+              labelText="StudentID"
+              name="StudentID"
+              value={studentID}
+              handleChange={(e) => setStudentId(e.target.value)}
+            />
+          )}
+
+          {user.type === "Student" && (
+            <FormRow
+              type="text"
+              labelText="Faculty"
+              name="Faculty"
+              value={faculty}
+              handleChange={(e) => setFaculty(e.target.value)}
+            />
+          )}
+
+          {user.type === "Student" && (
+            <FormRow
+              type="text"
+              labelText="Contact No"
+              name="contact"
+              value={contactNo}
+              handleChange={(e) => setContactNo(e.target.value)}
+            />
+          )}
+
           <FormRow
-            type='text'
-            name='name'
+            type="text"
+            labelText={NAME_Text}
+            name="name"
             value={name}
             handleChange={(e) => setName(e.target.value)}
           />
+
           <FormRow
-            type='email'
-            name='email'
+            type="email"
+            name="email"
             value={email}
             handleChange={(e) => setEmail(e.target.value)}
           />
+
+          {user.type !== "Partner" && (
+            <FormRow
+              type="text"
+              labelText="last name"
+              name="lastName"
+              value={lastName}
+              handleChange={(e) => setLastName(e.target.value)}
+            />
+          )}
+
           <FormRow
+
+            type="text"
+            labelText={NIC_Text}
+            name="nic"
             type='text'
             labelText='last name'
             name='lastName'
@@ -275,10 +364,10 @@ const Profile =  () => {
             name='nic'
 
 
+
             value={nic}
             handleChange={(e) => setNic(e.target.value)}
           />
-
 
 
           {user.type === "Student" && (
@@ -308,6 +397,7 @@ const Profile =  () => {
             //   </div>
             // </div>
           )}
+
 
           {user.type === "Staff" && (
             <FormRow
@@ -424,122 +514,116 @@ const Profile =  () => {
             </div>
             <div className="col-md-4"></div>
             </div>
-        </div> */}
 
-        {user.type === 'Staff' && (
-          <FormRow
-              type='text'
-              labelText='Contact No'
-              name='contact'
+
+          {user.type === "Staff" && (
+            <FormRow
+              type="text"
+              labelText="Contact No"
+              name="contact"
               value={contactNo}
               handleChange={(e) => setContactNo(e.target.value)}
             />
-        )}
+          )}
 
-        {user.type === 'Staff' && (
-          <FormRow
-              type='text'
-              labelText='Address'
-              name='address'
+          {user.type === "Staff" && (
+            <FormRow
+              type="text"
+              labelText="Address"
+              name="address"
               value={address}
               handleChange={(e) => setAddress(e.target.value)}
             />
-        )}
+          )}
 
-      {user.type === 'Staff' && (
-          <FormRow
-              type='text'
-              labelText='Department'
-              name='department'
+          {user.type === "Staff" && (
+            <FormRow
+              type="text"
+              labelText="Department"
+              name="department"
               value={department}
               handleChange={(e) => setDepartment(e.target.value)}
             />
-        )}
+          )}
 
-      {user.type === 'Staff' && (
-          <FormRow
-              type='text'
-              labelText='Job Role'
-              name='jobrole'
+          {user.type === "Staff" && (
+            <FormRow
+              type="text"
+              labelText="Job Role"
+              name="jobrole"
               value={jobRole}
               handleChange={(e) => setJobRole(e.target.value)}
             />
-        )}
+          )}
 
-        {user.type === 'Alumni' && (
-          <FormRow
-              type='text'
-              labelText='Contact No'
-              name='contact'
+          {user.type === "Alumni" && (
+            <FormRow
+              type="text"
+              labelText="Contact No"
+              name="contact"
               value={contactNo}
               handleChange={(e) => setContactNo(e.target.value)}
             />
-        )}
+          )}
 
-        {user.type === 'Alumni' && (
-          <FormRow
-              type='text'
-              labelText='Address'
-              name='address'
+          {user.type === "Alumni" && (
+            <FormRow
+              type="text"
+              labelText="Address"
+              name="address"
               value={address}
               handleChange={(e) => setAddress(e.target.value)}
             />
-        )}
-
-          {user.type === 'Alumni' && (
-                  <FormRow
-                      type='text'
-                      labelText='Company'
-                      name='company'
-                      value={company}
-                      handleChange={(e) => setCompany(e.target.value)}
-                    />
-
           )}
 
-        {user.type === 'Alumni' && (
-              <FormRow
-                  type='text'
-                  labelText='Job Title'
-                  name='jobTitle'
-                  value={jobTitle}
-                  handleChange={(e) => setJobTitle(e.target.value)}
-                />
-        )}
-
-        {user.type === 'Alumni' && (
+          {user.type === "Alumni" && (
             <FormRow
-                type='text'
-                labelText='Graduated Year'
-                name='year'
-                value={graduatedYear}
-                handleChange={(e) => setGraduatedYear(e.target.value)}
-              />
-        )}
+              type="text"
+              labelText="Company"
+              name="company"
+              value={company}
+              handleChange={(e) => setCompany(e.target.value)}
+            />
+          )}
 
-        {user.type === 'Partner' && (
+          {user.type === "Alumni" && (
             <FormRow
-                type='text'
-                labelText='Location'
-                name='location'
-                value={location}
-                handleChange={(e) => setLocation(e.target.value)}
-              />
-        )}
+              type="text"
+              labelText="Job Title"
+              name="jobTitle"
+              value={jobTitle}
+              handleChange={(e) => setJobTitle(e.target.value)}
+            />
+          )}
 
-          <button className='btn btn-block' type='submit' disabled={isLoading}>
-            {isLoading ? 'Please Wait...' : 'save changes'}
+          {user.type === "Alumni" && (
+            <FormRow
+              type="text"
+              labelText="Graduated Year"
+              name="year"
+              value={graduatedYear}
+              handleChange={(e) => setGraduatedYear(e.target.value)}
+            />
+          )}
+
+          {user.type === "Partner" && (
+            <FormRow
+              type="text"
+              labelText="Location"
+              name="location"
+              value={location}
+              handleChange={(e) => setLocation(e.target.value)}
+            />
+          )}
+
+          <button className="btn btn-block" type="submit" disabled={isLoading}>
+            {isLoading ? "Please Wait..." : "save changes"}
           </button>
-
-
 
         </div>
       </form>
       <br></br>
       <div>
-
-
-
 
         <br />
         <br />
@@ -592,39 +676,12 @@ const Profile =  () => {
     </Wrapper>
   );
 };
+    <br /><br />
+      <div>
+        <h3>Upload Profile Picture</h3>
+
+
 
 export default Profile;
 
-
-      <br /><br />
-      <div>
-        <h3>Upload Profile Picture</h3>
-          {selectedImage && (
-            <div>
-              <img alt="not fount" width={"250px"} src={URL.createObjectURL(selectedImage)} />
-            <br />
-            <button className='btn btn-danger' onClick={()=>setSelectedImage(null)}>Remove</button>
-            <button className='btn btn-success' onClick={()=>setSelectedImage(null)}>Upload</button>
-            </div>
-          )}
-          <br />
-        
-          <br /> 
-          <input
-            className='btn btn-info'
-            type="file"
-            name="myImage"
-            onChange={(event) => {
-              console.log(event.target.files[0]);
-              setSelectedImage(event.target.files[0]);
-            }}
-          />
-      </div>
-
-      </div>
-    </Wrapper>
-  )
-}
-
-export default Profile
 

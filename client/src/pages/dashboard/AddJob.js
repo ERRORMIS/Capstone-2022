@@ -8,6 +8,8 @@ import { EditorState } from 'draft-js';
 import { convertToHTML } from 'draft-convert';
 // import DOMPurify from 'dompurify';
 
+
+//Add a new Project Function
 const AddJob = () => {
   const {
     isLoading,
@@ -111,6 +113,7 @@ const AddJob = () => {
             name='startDate'
             value={startDate}
             handleChange={handleJobInput}
+
           />
 
           <FormRow
@@ -120,6 +123,8 @@ const AddJob = () => {
             value={endDate}
             handleChange={handleJobInput}
           />
+
+
 
           {/* job status */}
           <FormRowSelect
