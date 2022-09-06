@@ -23,6 +23,7 @@ const createJob = async (req, res) => {
   
 }
 
+//Retrieve all projects form db
 const getAllJobs = async (req, res) => {
    
   const { status, jobType, sort, search } = req.query
@@ -77,6 +78,7 @@ const getAllJobs = async (req, res) => {
   res.status(StatusCodes.OK).json({ jobs, totalJobs, numOfPages })
 
 }
+//update projects function
 
 const updateJob = async (req, res) => {
   const { id: jobId } = req.params

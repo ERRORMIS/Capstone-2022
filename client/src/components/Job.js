@@ -5,6 +5,7 @@ import { useAppContext } from '../context/appContext'
 import Wrapper from '../assets/wrappers/Job'
 import JobInfo from './JobInfo'
 
+//All Projects pages
 const Job = ({
   _id,
   title,
