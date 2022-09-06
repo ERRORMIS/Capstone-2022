@@ -9,7 +9,7 @@ import checkPermissions from '../utils/checkPermissions.js'
 import mongoose from 'mongoose'
 import moment from 'moment'
 
-
+//Create project
 const createJob = async (req, res) => {
 
   const {title, owner } = req.body
