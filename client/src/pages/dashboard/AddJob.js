@@ -106,8 +106,6 @@ const AddJob = () => {
             handleChange={handleJobInput}
           />
 
-
-
           {/* job status */}
           <FormRowSelect
             name="status"
