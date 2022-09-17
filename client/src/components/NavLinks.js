@@ -84,10 +84,19 @@ const NavLinks = ({ toggleSidebar }) => {
               {"alumni"}
           </NavLink>
 
+          <NavLink
+              to="/search"
+              key={9}
+              onClick={toggleSidebar}
+              className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>
+              <span className='icon'><FaWpforms /></span>
+              {"Search"}
+          </NavLink>
+
           {user.type === 'Incubator' && (
             <NavLink
                 to="/academic-staff"
-                key={9}
+                key={10}
                 onClick={toggleSidebar}
                 className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>
                 <span className='icon'><FaWpforms /></span>
