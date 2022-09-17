@@ -10,9 +10,12 @@ import {
 import AcademicStaff from "./pages/dashboard/AcademicStaff";
 import AlumniList from "./pages/dashboard/AlumniList";
 import PartnerList from "./pages/dashboard/PartnerList";
+import ProfileList from "./pages/dashboard/ProfileList";
 import Faculty from "./pages/dashboard/Faculty";
 import ForgotPasswordScreen from "./pages/ForgotPasswordScreen";
 import ResetPasswordScreen from "./pages/ResetPasswordScreen";
+import Search from "./pages/dashboard/Search";
+
 function App() {
   return (
     <BrowserRouter>
@@ -24,7 +27,7 @@ function App() {
               <SharedLayout />
             </ProtectedRoute>
           }
-        >
+        > 
           <Route index element={<Stats />} />
           <Route path="all-jobs" element={<AllJobs />} />
           <Route path="add-job" element={<AddJob />} />
@@ -33,6 +36,8 @@ function App() {
           <Route path="academic-staff" element={<AcademicStaff />} />
           <Route path="alumni-list" element={<AlumniList />} />
           <Route path="partner-list" element={<PartnerList />} />
+          <Route path="profile-list" element={<ProfileList />} />
+          <Route path="search" element={<Search />} />
         </Route>
         <Route path="/login" element={< Register />} />
         <Route path="/register" element={< RegisterPage />} />
