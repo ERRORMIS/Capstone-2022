@@ -5,10 +5,6 @@ import { useEffect } from 'react'
 import Loading from '../../components/Loading'
 
 
-
-//List of Partners
-
-
 const PartnerList = () => {
   const { 
     getPartnerList,
@@ -50,5 +46,5 @@ const PartnerList = () => {
       </>
     )
   }
-  
+   
 export default PartnerList;

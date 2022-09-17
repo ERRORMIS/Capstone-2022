@@ -19,9 +19,6 @@ const initialState = {
   passwordErrMsg: "",
 };
 
-
-//Types of Accounts
-
 const accountTypeList = [
   { label: "Student", value: "Student" },
   { label: "Staff", value: "Staff" },
@@ -49,20 +46,6 @@ const RegisterPage = () => {
     e.preventDefault();
 
     const {
-
-      name,
-      email,
-      password,
-      type,
-      department,
-      jobRole,
-      jobTitle,
-      partnertype,
-      isPasswordError,
-    } = values;
-
-    if (isPasswordError) {
-      return;
         name,
         email,
         password,
@@ -73,6 +56,10 @@ const RegisterPage = () => {
         partnertype,
         isPasswordError,
     } = values;
+
+    if (isPasswordError) {
+        return;
+    }
 
     // console.log(name);
     // console.log(email);

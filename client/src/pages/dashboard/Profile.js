@@ -2,18 +2,14 @@ import { useState } from "react";
 import { FormRow, Alert } from "../../components";
 import { useAppContext } from "../../context/appContext";
 import Wrapper from "../../assets/wrappers/DashboardFormPage";
+import Select from "react-select";
+import { userTypesWithSpecialization } from "../../constants/constants";
 
 const Profile = () => {
   const [selectedImage, setSelectedImage, values, setValues] = useState(null);
 
-  const {
-    user,
-    showAlert,
-    displayAlert,
-    updateUser,
-    isLoading,
-    uploadProfile,
-  } = useAppContext();
+  const { user, showAlert, displayAlert, updateUser, isLoading, uploadProfile, projectRequirement } =
+    useAppContext();
 
   const [name, setName] = useState(user?.name);
   const [email, setEmail] = useState(user?.email);
@@ -22,6 +18,7 @@ const Profile = () => {
   const [nic, setNic] = useState(user?.nic);
   const [id] = useState(user?.id);
   const [type] = useState(user?.type);
+  const [specializedAreas, setSpecializedAreas] = useState(user?.specializedAreas);
 
   const [department, setDepartment] = useState(user?.department);
   const [jobRole, setJobRole] = useState(user?.jobRole);
@@ -39,7 +36,7 @@ const Profile = () => {
   const [partnerType] = useState(user?.partnerType);
 
   const [imgFile, setImgFile] = useState(user?.img);
-
+  const [specialization, setSpecialization] = useState(user?.specialization || [])
   let NIC_Text = "NIC";
   let NAME_Text = "Name";
 
@@ -71,6 +68,7 @@ const Profile = () => {
         studentID,
         faculty,
         contactNo,
+        specialization
       });
     } else if (type === "Staff") {
       updateUser({
@@ -84,6 +82,7 @@ const Profile = () => {
         address,
         department,
         jobRole,
+        specialization
       });
     } else if (type === "Alumni") {
       updateUser({
@@ -98,6 +97,7 @@ const Profile = () => {
         company,
         jobTitle,
         graduatedYear,
+        specialization
       });
     } else if (type === "Partner") {
       updateUser({ name, email, lastName, nic, type, id, location });
@@ -113,7 +113,6 @@ const Profile = () => {
 
     await setImgFile(null);
   };
-
   return (
     <Wrapper>
       <form className="form" onSubmit={handleSubmit}>
@@ -149,6 +148,8 @@ const Profile = () => {
               handleChange={(e) => setContactNo(e.target.value)}
             />
           )}
+
+          
 
           <FormRow
             type="text"
@@ -211,6 +212,25 @@ const Profile = () => {
             // </div>
           )}
 
+          { userTypesWithSpecialization.includes(user.type) && 
+            <div className="form-row">
+            <label htmlFor="projectRequirement" className="form-label">
+              Specialization
+            </label>
+              <Select
+                isMulti
+                name="Specialization"
+                className="basic-multi-select"
+                classNamePrefix="select"
+                options={projectRequirement}
+                value={specialization}
+                onChange={(value) => {
+                  setSpecialization(value)
+                }}
+  
+              />
+            </div>
+          }
           {user.type === "Staff" && (
             <FormRow
               type="text"
@@ -341,12 +361,12 @@ const Profile = () => {
                 height={150}
               />
               <br />
-              {/* <button
+              <button
                 className="btn btn-danger"
                 onClick={() => setSelectedImage(null)}
               >
                 Remove
-              </button> */}
+              </button>
               <button className="btn btn-success" onClick={uploadProfileImage}>
                 Upload
               </button>

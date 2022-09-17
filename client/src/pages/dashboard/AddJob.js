@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FormRow, FormRowSelect, Alert } from "../../components";
 import { useAppContext } from "../../context/appContext";
 import Wrapper from "../../assets/wrappers/DashboardFormPage";
@@ -7,8 +7,12 @@ import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { EditorState } from "draft-js";
 import { convertToHTML } from "draft-convert";
 // import DOMPurify from 'dompurify';
+import Select from "react-select";
+import { CKEditor } from "@ckeditor/ckeditor5-react";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import { Button } from "react-bootstrap";
+import MemberRecommendations from "../../components/MemberRecommendations";
 
-//Add a new Project Function
 const AddJob = () => {
   const {
     isLoading,
@@ -18,6 +22,8 @@ const AddJob = () => {
     title,
     owner,
     description,
+    // jobType,
+    // jobTypeOptions,
     status,
     statusOptions,
     projectRequirement,
@@ -28,6 +34,7 @@ const AddJob = () => {
     endDate,
     editJob,
     requirement,
+    getUsersBaseOnProjectRequirements,
   } = useAppContext();
 
   const [editorState, setEditorState] = useState(() =>
@@ -35,6 +42,19 @@ const AddJob = () => {
   );
 
   const [convertedContent, setConvertedContent] = useState(null);
+
+  useEffect(() => {
+    if (requirement.length === 0) {
+      getUsersBaseOnProjectRequirements({requirements: []});
+
+      return;
+    }
+    const selectedRequirements = requirement.map((item) => item.value);
+    const body = {
+      requirements: selectedRequirements,
+    };
+    getUsersBaseOnProjectRequirements(body);
+  }, [requirement]);
 
   const handleEditorChange = (state) => {
     setEditorState(state);
@@ -48,12 +68,8 @@ const AddJob = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const name = "description";
-    const value = convertedContent;
-    handleChange({ name, value });
 
-    console.log(convertedContent);
-    if (!title || !owner || !description) {
+    if (!title || !owner || !description || !startDate || !endDate) {
       displayAlert();
       return;
     }
@@ -63,11 +79,25 @@ const AddJob = () => {
     }
     createJob();
   };
+
   const handleJobInput = (e) => {
     const name = e.target.name;
     const value = e.target.value;
     handleChange({ name, value });
   };
+
+  const handleJobInputDescription = (e) => {
+    const name = "description";
+    const value = e.data;
+    handleChange({ name, value });
+  };
+
+  const handleOnSelectProjectRequirements = (value) => {
+    const name = "requirement";
+    handleChange({ name, value });
+  };
+
+  const [text, setText] = useState("");
 
   return (
     <Wrapper>
@@ -89,13 +119,21 @@ const AddJob = () => {
             value={owner}
             handleChange={handleJobInput}
           />
+          {/* location */}
+          {/* <FormRow
+            type='textarea'
+            labelText='description'
+            name='description'
+            value={description}
+            handleChange={handleJobInput}
+          /> */}
+
           <FormRow
             type="date"
             labelText="Start Date"
             name="startDate"
             value={startDate}
             handleChange={handleJobInput}
-
           />
 
           <FormRow
@@ -114,23 +152,40 @@ const AddJob = () => {
             list={statusOptions}
           />
 
-          <FormRowSelect
-            labelText="Project Requirement"
-            name="requirement"
-            value={requirement}
-            handleChange={handleJobInput}
-            list={projectRequirement}
-          />
+          <div className="form-row">
+            <label htmlFor="projectRequirement" className="form-label">
+              Project Requirement
+            </label>
+            <Select
+              isMulti
+              name="requirement"
+              className="basic-multi-select"
+              classNamePrefix="select"
+              options={projectRequirement}
+              value={requirement}
+              onChange={handleOnSelectProjectRequirements}
+            />
+          </div>
 
           <div className="form-row">
             <label className="form-label">description</label>
-            <Editor
-              toolbarClassName="toolbarClassName"
-              wrapperClassName="wrapperClassName"
-              editorClassName="editorClassName"
-              editorState={editorState}
-              onEditorStateChange={handleEditorChange}
-              wrapperStyle={{ width: 500, border: "1px solid black" }}
+            {/* <Editor
+                toolbarClassName="toolbarClassName"
+                wrapperClassName="wrapperClassName"
+                editorClassName="editorClassName"
+                editorState={editorState}
+                onEditorStateChange={handleEditorChange}
+                wrapperStyle={{ width: 500, border: "1px solid black" }}
+              /> */}
+
+            <CKEditor
+              editor={ClassicEditor}
+              data={text}
+              onChange={(event, editor) => {
+                const data = editor.getData();
+                setText(data);
+                handleJobInputDescription({ data });
+              }}
             />
           </div>
 
@@ -156,6 +211,7 @@ const AddJob = () => {
           </div>
         </div>
       </form>
+      <MemberRecommendations />
     </Wrapper>
   );
 };
