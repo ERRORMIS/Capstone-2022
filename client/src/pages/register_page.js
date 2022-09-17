@@ -19,7 +19,6 @@ const initialState = {
   passwordErrMsg: "",
 };
 
-
 //Types of Accounts
 
 const accountTypeList = [
@@ -63,6 +62,7 @@ const RegisterPage = () => {
 
     if (isPasswordError) {
       return;
+
         name,
         email,
         password,
@@ -73,6 +73,11 @@ const RegisterPage = () => {
         partnertype,
         isPasswordError,
     } = values;
+
+
+    if (isPasswordError) {
+        return;
+    }
 
     // console.log(name);
     // console.log(email);
