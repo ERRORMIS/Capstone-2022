@@ -2,9 +2,7 @@
 
 #### Track Your Job Search
 
-
-
-# SLIIT MIS
+Project in Action - [Jobify](https://www.jobify.live/)
 
 #### Support
 

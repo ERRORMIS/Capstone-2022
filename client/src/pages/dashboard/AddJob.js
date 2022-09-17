@@ -13,7 +13,6 @@ import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { Button } from "react-bootstrap";
 import MemberRecommendations from "../../components/MemberRecommendations";
 
-//Add a new Project Function
 const AddJob = () => {
   const {
     isLoading,
@@ -135,7 +134,6 @@ const AddJob = () => {
             name="startDate"
             value={startDate}
             handleChange={handleJobInput}
-
           />
 
           <FormRow
