@@ -15,8 +15,8 @@ const Wrapper = styled.div`
     }
   }
   .text {
-    text-transform: capitalize;
     letter-spacing: var(--letterSpacing);
+    margin-left:5px
   }
 `
 export default Wrapper

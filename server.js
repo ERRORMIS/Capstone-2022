@@ -44,6 +44,7 @@ app.use(mongoSanitize())
 
 app.use('/api/v1/auth', authRouter)
 app.use('/api/v1/jobs', authenticateUser, jobsRouter)
+// app.use('/api/v1/jobs', jobsRouter)
 app.use('/api/v1/user', studentRouter)
 
 // only when ready to deploy
