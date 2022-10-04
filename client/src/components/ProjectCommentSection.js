@@ -16,7 +16,7 @@ const ProjectCommentSection = (props) => {
         <Col xs={12}>
           <Row className="comment-header">
             <Col xs={6} className="comment-author">
-              {comment.author.userID?.name}
+              {comment.name }
             </Col>
             <Col xs={6} className="comment-time">
               {moment(comment.time).format("LLL")}

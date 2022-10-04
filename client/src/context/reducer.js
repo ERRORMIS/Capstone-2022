@@ -35,6 +35,11 @@ import {
   GET_STUDENT_SUCCESS,
   GET_FILTERED_USER_BASE_ON_PROJECT_REQUIREMENT,
   STOP_LOADING,
+  FETCH_PROJECT_LOGS,
+  GET_REPORT_DETAILS_SUCCESS,
+  UPDATE_RECORDS,
+  START_LOADING,
+  GET_ALL_MEMBERS,
 } from "./actions";
 
 import { initialState } from "./appContext";
@@ -61,6 +66,7 @@ const reducer = (state, action) => {
     return { ...state, isLoading: true };
   }
   if (action.type === SETUP_USER_SUCCESS) {
+    console.log("setup user", action.payload);
     return {
       ...state,
       isLoading: true,
@@ -320,7 +326,40 @@ const reducer = (state, action) => {
       isLoading: false
     }
   }
-  throw new Error(`no such action : ${action.type}`);
+  if (action.type === FETCH_PROJECT_LOGS) {
+    return {
+      ...state,
+      projectLogs: action.payload
+    }
+  }
+  if (action.type === START_LOADING) {
+    return {
+      ...state,
+      isLoading: true
+    }
+  }
+  if (action.type === GET_REPORT_DETAILS_SUCCESS) {
+    return {
+      ...state,
+      financialOwnerId: action.payload._id,
+      initialCost: action.payload.initialCost,
+      records: action.payload.records,
+      chartRecords: action.payload.records,
+    };
+  }
+  if (action.type === UPDATE_RECORDS) {
+    return {
+      ...state,
+      records: action.payload,
+    };
+  }
+  if (action.type === GET_ALL_MEMBERS) {
+    return {
+      ...state,
+      allMemberForProject: action.payload
+    };
+  }
+    throw new Error(`no such action : ${action.type}`);
 };
 
 export default reducer;

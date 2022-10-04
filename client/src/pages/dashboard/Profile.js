@@ -18,7 +18,6 @@ const Profile = () => {
   const [nic, setNic] = useState(user?.nic);
   const [id] = useState(user?.id);
   const [type] = useState(user?.type);
-  const [specializedAreas, setSpecializedAreas] = useState(user?.specializedAreas);
 
   const [department, setDepartment] = useState(user?.department);
   const [jobRole, setJobRole] = useState(user?.jobRole);
@@ -37,6 +36,8 @@ const Profile = () => {
 
   const [imgFile, setImgFile] = useState(user?.img);
   const [specialization, setSpecialization] = useState(user?.specialization || [])
+  const [linkedinUrl, setLinkedinUrl] = useState(user?.linkedinUrl);
+
   let NIC_Text = "NIC";
   let NAME_Text = "Name";
 
@@ -51,12 +52,13 @@ const Profile = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!name || !email || !lastName || !nic) {
+    if ((!name || !email || !lastName || !nic )&& type !== 'Management') {
       displayAlert();
       return;
     }
 
     if (type === "Student") {
+      alert(linkedinUrl)
       updateUser({
         name,
         email,
@@ -68,9 +70,11 @@ const Profile = () => {
         studentID,
         faculty,
         contactNo,
-        specialization
+        specialization,
+        linkedinUrl
       });
     } else if (type === "Staff") {
+      
       updateUser({
         name,
         email,
@@ -82,7 +86,8 @@ const Profile = () => {
         address,
         department,
         jobRole,
-        specialization
+        specialization,
+        linkedinUrl
       });
     } else if (type === "Alumni") {
       updateUser({
@@ -97,10 +102,13 @@ const Profile = () => {
         company,
         jobTitle,
         graduatedYear,
-        specialization
+        specialization,
+        linkedinUrl
       });
     } else if (type === "Partner") {
-      updateUser({ name, email, lastName, nic, type, id, location });
+      updateUser({ name, email, lastName, nic, type, id, location , linkedinUrl});
+    } else if (type === "Management") {
+      updateUser({ name, email, type, id, location, nic, linkedinUrl });
     }
   };
 
@@ -166,7 +174,7 @@ const Profile = () => {
             handleChange={(e) => setEmail(e.target.value)}
           />
 
-          {user.type !== "Partner" && (
+          {!["Partner", "Management"].includes(user.type) && (
             <FormRow
               type="text"
               labelText="last name"
@@ -182,6 +190,14 @@ const Profile = () => {
             name="nic"
             value={nic}
             handleChange={(e) => setNic(e.target.value)}
+          />
+
+          <FormRow
+            type="text"
+            labelText={'Linkedin Url'}
+            name="linkedinUrl"
+            value={linkedinUrl}
+            handleChange={(e) => setLinkedinUrl(e.target.value)}
           />
 
           {user.type === "Student" && (

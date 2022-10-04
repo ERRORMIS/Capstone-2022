@@ -38,6 +38,10 @@ const UserSchema = new mongoose.Schema({
     maxlength: 20,
     default: 'my city',
   },
+  linkedinUrl: {
+    type: String,
+    default: "",
+  },
 })
 
 UserSchema.pre('save', async function () {

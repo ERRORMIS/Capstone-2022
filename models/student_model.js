@@ -25,6 +25,10 @@ const StudentSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
+    linkedinUrl: {
+      type: String,
+      default: "",
+    },
     img: {
       type: String,
       default: "",

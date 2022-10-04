@@ -15,6 +15,10 @@ const incubatorSchema = new mongoose.Schema(
     location: {
         type: String,
     },
+    linkedinUrl: {
+        type: String,
+        default: "",
+      },
     img: {
         type: String,
         default: ''

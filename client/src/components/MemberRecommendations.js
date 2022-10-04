@@ -1,10 +1,10 @@
 import React from "react";
-import { Col, Row } from "react-bootstrap";
+import { Col, Row, Modal } from "react-bootstrap";
 import Wrapper from "../assets/wrappers/MemberRecommendations";
 import { useAppContext } from "../context/appContext";
 import Loading from "./Loading";
 
-const MemberRecommendations = () => {
+const MemberRecommendations = ({ show, handleOnCloseModal }) => {
   const {
     filteredUserBasedOnProjectRequirement,
     teamMembers,
@@ -111,6 +111,10 @@ const MemberRecommendations = () => {
     });
   };
 
+  const handleOnClose = () => {
+    handleOnCloseModal();
+  };
+
   if (isLoading) {
     return (
       <div className="mt-5">
@@ -121,56 +125,65 @@ const MemberRecommendations = () => {
 
   return (
     <Wrapper>
-      <Row className="recommendation-section">
-        <Col xs={12} className="my-3 topic-text">
-          Recommendations
-        </Col>
-        <Col xs={12}>
-          <Row>
-            <Col xs={4}>
+      <Modal
+        size="lg"
+        show={show}
+        onHide={handleOnClose}
+        className="import-csv-modal"
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Recommendations</Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="modal-body">
+          <Row className="recommendation-section">
+            <Col xs={12}>
               <Row>
-                <Col xs={12} className="mb-2">
-                  students
+                <Col xs={4}>
+                  <Row>
+                    <Col xs={12} className="mb-2">
+                      students
+                    </Col>
+                    <Col xs={12} className="student-list">
+                      {renderRecommendationList(
+                        filteredUserBasedOnProjectRequirement.students,
+                        "students"
+                      )}
+                    </Col>
+                  </Row>
                 </Col>
-                <Col xs={12} className='student-list'>
-                  {renderRecommendationList(
-                    filteredUserBasedOnProjectRequirement.students,
-                    "students"
-                  )}
-                </Col>
-              </Row>
-            </Col>
 
-            <Col xs={4}>
-              <Row>
-                <Col xs={12} className="mb-2">
-                  Alumni
+                <Col xs={4}>
+                  <Row>
+                    <Col xs={12} className="mb-2">
+                      Alumni
+                    </Col>
+                    <Col xs={12} className="alumni-list">
+                      {renderRecommendationList(
+                        filteredUserBasedOnProjectRequirement.alumni,
+                        "alumni"
+                      )}
+                    </Col>
+                  </Row>
                 </Col>
-                <Col xs={12} className='alumni-list'>
-                  {renderRecommendationList(
-                    filteredUserBasedOnProjectRequirement.alumni,
-                    "alumni"
-                  )}
-                </Col>
-              </Row>
-            </Col>
 
-            <Col xs={4}>
-              <Row>
-                <Col xs={12} className="mb-2">
-                  staff
-                </Col>
-                <Col xs={12} className='staff-list'>
-                  {renderRecommendationList(
-                    filteredUserBasedOnProjectRequirement.staff,
-                    "staff"
-                  )}
+                <Col xs={4}>
+                  <Row>
+                    <Col xs={12} className="mb-2">
+                      staff
+                    </Col>
+                    <Col xs={12} className="staff-list">
+                      {renderRecommendationList(
+                        filteredUserBasedOnProjectRequirement.staff,
+                        "staff"
+                      )}
+                    </Col>
+                  </Row>
                 </Col>
               </Row>
             </Col>
           </Row>
-        </Col>
-      </Row>
+        </Modal.Body>
+      </Modal>
     </Wrapper>
   );
 };
