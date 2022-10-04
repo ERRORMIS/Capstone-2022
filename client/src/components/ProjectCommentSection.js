@@ -25,7 +25,11 @@ const ProjectCommentSection = (props) => {
 
               {comment.name }
 
+
+              {comment.name }
+
               {comment.author.userID?.name}
+
 
 
 

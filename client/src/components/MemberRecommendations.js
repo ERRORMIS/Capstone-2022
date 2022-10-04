@@ -8,7 +8,11 @@ import { Col, Row, Modal } from "react-bootstrap";
 
 import { Col, Row, Modal } from "react-bootstrap";
 
+
+import { Col, Row, Modal } from "react-bootstrap";
+
 import { Col, Row } from "react-bootstrap";
+
 
 
 
@@ -25,7 +29,11 @@ const MemberRecommendations = ({ show, handleOnCloseModal }) => {
 
 const MemberRecommendations = ({ show, handleOnCloseModal }) => {
 
+
+const MemberRecommendations = ({ show, handleOnCloseModal }) => {
+
 const MemberRecommendations = () => {
+
 
 
   const {
@@ -135,16 +143,9 @@ const MemberRecommendations = () => {
   };
 
 
-
-
-
   const handleOnClose = () => {
     handleOnCloseModal();
   };
-
-
-
-
 
 
   if (isLoading) {
@@ -157,9 +158,6 @@ const MemberRecommendations = () => {
 
   return (
     <Wrapper>
-
-
-
 
       <Modal
         size="lg"
@@ -188,6 +186,18 @@ const MemberRecommendations = () => {
                     </Col>
                   </Row>
                 </Col>
+
+
+                <Col xs={4}>
+                  <Row>
+                    <Col xs={12} className="mb-2">
+                      Alumni
+                    </Col>
+                    <Col xs={12} className="alumni-list">
+                      {renderRecommendationList(
+                        filteredUserBasedOnProjectRequirement.alumni,
+                        "alumni"
+
 
 
                 <Col xs={4}>
@@ -247,10 +257,25 @@ const MemberRecommendations = () => {
                         filteredUserBasedOnProjectRequirement.students,
                         "students"
 
+
                       )}
                     </Col>
                   </Row>
                 </Col>
+
+
+                <Col xs={4}>
+                  <Row>
+                    <Col xs={12} className="mb-2">
+                      staff
+                    </Col>
+                    <Col xs={12} className="staff-list">
+                      {renderRecommendationList(
+                        filteredUserBasedOnProjectRequirement.staff,
+                        "staff"
+                      )}
+                    </Col>
+
 
 
                 <Col xs={4}>
@@ -308,6 +333,7 @@ const MemberRecommendations = () => {
 
 
 
+
                 </Col>
               </Row>
             </Col>
@@ -324,8 +350,13 @@ const MemberRecommendations = () => {
         </Modal.Body>
       </Modal>
 
+
+        </Modal.Body>
+      </Modal>
+
         </Col>
       </Row>
+
 
 
 
