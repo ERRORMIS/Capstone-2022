@@ -3,7 +3,7 @@ import { useAppContext } from '../../context/appContext'
 import { useEffect } from 'react'
 import Loading from '../../components/Loading'
 import {useLocation} from 'react-router-dom';
-
+import linkedin from '../../assets/images/linkedin.png';
 
 function ProfileList (props) {
 
@@ -33,6 +33,10 @@ function ProfileList (props) {
                             { location.state.studentID && <p>StudentID: {location.state.studentID}</p>} 
                             { location.state.gender && <p>Gender: {location.state.gender}</p>} 
                             { location.state.faculty && <p>Faculty: {location.state.faculty}</p>} 
+                            { location.state.linkedinUrl && <a href={location.state.linkedinUrl} target="_blank">
+                                <img className="linkedin-button" src={linkedin} />
+                              </a>
+                            }
                             
                         </div>
                     </div>

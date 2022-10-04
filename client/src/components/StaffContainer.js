@@ -4,9 +4,10 @@ import { bootstrap } from "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./StaffContainer.css";
 import { Link, useNavigate } from 'react-router-dom'
+import linkedin from '../assets/images/linkedin.png';
 
 // export default class StaffContainer extends Component {
-const StaffContainer = ({name,lastName,email, contactNo,address,department,jobRole,img,nic }) => {
+const StaffContainer = ({name,lastName,email, contactNo,address,department,jobRole,img,nic, linkedinUrl }) => {
 
   const navigate = useNavigate();
 
@@ -20,7 +21,8 @@ const StaffContainer = ({name,lastName,email, contactNo,address,department,jobRo
         address: address,
         department: department,
         jobRole: jobRole,
-        img: new_img
+        img: new_img,
+        linkedinUrl
       }});
   }
 
@@ -42,6 +44,10 @@ const StaffContainer = ({name,lastName,email, contactNo,address,department,jobRo
                             <div className="row">
                             <h5><b>{name} {lastName}</b></h5>
                             <p>{email}</p>
+                            { linkedinUrl && <a href={linkedinUrl} target="_blank">
+                                <img className="linkedin-button" src={linkedin} />
+                              </a>
+                            }
                         </div>
                         </div>
                         <div class="col-md-2">
@@ -49,6 +55,7 @@ const StaffContainer = ({name,lastName,email, contactNo,address,department,jobRo
                             to={{ pathname: '/profile-list', state: "hello" }}
                             className='btn btn-primary'
                           >View</Link> */}
+                        
 
                         <button
                           className='btn btn-primary'

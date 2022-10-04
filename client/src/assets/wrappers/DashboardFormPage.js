@@ -44,7 +44,12 @@ const Wrapper = styled.section`
   }
   .clear-btn:hover {
     background: var(--black);
+    color: white;
   }
+  .import-btn {
+    background: orange;
+  }
+  
   @media (min-width: 992px) {
     .form-center {
       grid-template-columns: 1fr 1fr;
@@ -63,6 +68,6 @@ const Wrapper = styled.section`
       margin-top: 0;
     }
   }
-`
+`;
 
 export default Wrapper

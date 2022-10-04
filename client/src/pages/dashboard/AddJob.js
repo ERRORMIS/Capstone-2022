@@ -10,8 +10,10 @@ import { convertToHTML } from "draft-convert";
 import Select from "react-select";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-import { Button } from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
+import ImportCSVModal from "../../components/ImportCSVModal";
 import MemberRecommendations from "../../components/MemberRecommendations";
+import MemberPool from "../../components/MemberPool";
 
 const AddJob = () => {
   const {
@@ -42,13 +44,17 @@ const AddJob = () => {
   );
 
   const [convertedContent, setConvertedContent] = useState(null);
+  const [showImportModal, setShowImportModal] = useState(false);
+  const [showRecommendationModal, setShowRecommendationModal] = useState(false);
+  const [text, setText] = useState("");
 
   useEffect(() => {
     if (requirement.length === 0) {
-      getUsersBaseOnProjectRequirements({requirements: []});
+      getUsersBaseOnProjectRequirements({ requirements: [] });
 
       return;
     }
+
     const selectedRequirements = requirement.map((item) => item.value);
     const body = {
       requirements: selectedRequirements,
@@ -56,14 +62,22 @@ const AddJob = () => {
     getUsersBaseOnProjectRequirements(body);
   }, [requirement]);
 
-  const handleEditorChange = (state) => {
-    setEditorState(state);
-    convertContentToHTML();
+  const handleOnImport = (e) => {
+    e.preventDefault();
+    setShowImportModal(true);
   };
+
   const convertContentToHTML = () => {
     let currentContentAsHTML = convertToHTML(editorState.getCurrentContent());
     setConvertedContent(currentContentAsHTML);
-    console.log(convertedContent);
+  };
+
+  const handleOnCloseModal = () => {
+    setShowImportModal(false);
+  };
+
+  const handleOnCloseRecommendationModal = () => {
+    setShowRecommendationModal(false);
   };
 
   const handleSubmit = (e) => {
@@ -78,6 +92,7 @@ const AddJob = () => {
       return;
     }
     createJob();
+    window.history.back();
   };
 
   const handleJobInput = (e) => {
@@ -97,12 +112,24 @@ const AddJob = () => {
     handleChange({ name, value });
   };
 
-  const [text, setText] = useState("");
+  const handleOnRecommendationBtnClick = (e) => {
+    e.preventDefault();
+    setShowRecommendationModal(true);
+  };
 
   return (
     <Wrapper>
       <form className="form">
-        <h3>{isEditing ? "edit project" : "add project"}</h3>
+        <Row className="mb-3">
+          <Col xs={8}>
+            <h3>{isEditing ? "edit project" : "add project"}</h3>
+          </Col>
+          <Col xs={4} className="text-end">
+            <button onClick={handleOnImport} className="btn import-btn">
+              Import
+            </button>
+          </Col>
+        </Row>
         {showAlert && <Alert />}
         <div className="form-center">
           {/* title */}
@@ -169,18 +196,11 @@ const AddJob = () => {
 
           <div className="form-row">
             <label className="form-label">description</label>
-            {/* <Editor
-                toolbarClassName="toolbarClassName"
-                wrapperClassName="wrapperClassName"
-                editorClassName="editorClassName"
-                editorState={editorState}
-                onEditorStateChange={handleEditorChange}
-                wrapperStyle={{ width: 500, border: "1px solid black" }}
-              /> */}
+        
 
             <CKEditor
               editor={ClassicEditor}
-              data={text}
+              data={description}
               onChange={(event, editor) => {
                 const data = editor.getData();
                 setText(data);
@@ -188,30 +208,52 @@ const AddJob = () => {
               }}
             />
           </div>
-
-          {/* btn container */}
-          <div className="btn-container">
-            <button
-              type="submit"
-              className="btn btn-block submit-btn"
-              onClick={handleSubmit}
-              disabled={isLoading}
-            >
-              submit
-            </button>
-            <button
-              className="btn btn-block clear-btn"
-              onClick={(e) => {
-                e.preventDefault();
-                clearValues();
-              }}
-            >
-              clear
-            </button>
-          </div>
         </div>
+
+        <MemberPool />
+
+        <Row className="mb-3">
+          <Col xs={12}>
+            <button
+              onClick={handleOnRecommendationBtnClick}
+              className="btn import-btn"
+            >
+              Recommendations
+            </button>
+          </Col>
+        </Row>
+
+        {/* btn container */}
+        <Row className="btn-container mt-5 mb-5">
+          <button
+            type="submit"
+            className="btn btn-block submit-btn"
+            onClick={handleSubmit}
+            disabled={isLoading}
+          >
+            submit
+          </button>
+          <button
+            className="btn btn-block clear-btn"
+            onClick={(e) => {
+              e.preventDefault();
+              clearValues();
+            }}
+          >
+            clear
+          </button>
+        </Row>
       </form>
-      <MemberRecommendations />
+
+      <MemberRecommendations
+        show={showRecommendationModal}
+        handleOnCloseModal={handleOnCloseRecommendationModal}
+      />
+
+      <ImportCSVModal
+        show={showImportModal}
+        handleOnCloseModal={handleOnCloseModal}
+      />
     </Wrapper>
   );
 };
