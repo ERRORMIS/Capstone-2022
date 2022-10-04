@@ -6,11 +6,10 @@ import Staff from "../models/staff_model.js";
 import Alumni from "../models/alumni_model.js";
 import Partner from "../models/partner_model.js";
 import Incubator from "../models/incubator_model.js";
-
+import Management from "../models/management_model.js";
 import Login from "../models/login_model.js";
 
 const register = async (req, res) => {
-
   let userModel;
 
   const {
@@ -71,10 +70,9 @@ const register = async (req, res) => {
       location: user.name,
     });
   } else if (type == "Staff") {
-
     userModel = "Staff";
 
-if (!name || !email || !password || !department || !jobRole) {
+    if (!name || !email || !password || !department || !jobRole) {
       throw new BadRequestError("please provide all values");
     }
 
@@ -85,7 +83,7 @@ if (!name || !email || !password || !department || !jobRole) {
 
     const user = await Staff.create({ name, email, department, jobRole });
     const userID = user._id;
-    
+
     const login = await Login.create({
       userID,
       userModel,
@@ -114,7 +112,6 @@ if (!name || !email || !password || !department || !jobRole) {
       location: user.name,
     });
   } else if (type == "Alumni") {
-
     userModel = "Alumni";
     if (!name || !email || !password || !jobTitle) {
       throw new BadRequestError("please provide all values");
@@ -157,7 +154,6 @@ if (!name || !email || !password || !department || !jobRole) {
       location: user.name,
     });
   } else if (type == "Partner") {
-
     userModel = "Partner";
     if (!name || !email || !password || !partnerType) {
       throw new BadRequestError("please provide all values");
@@ -196,7 +192,6 @@ if (!name || !email || !password || !department || !jobRole) {
       location: user.name,
     });
   } else if (type == "Incubator") {
-
     userModel = "Incubator";
     if (!company || !email || !password) {
       throw new BadRequestError("please provide all values");
@@ -208,6 +203,41 @@ if (!name || !email || !password || !department || !jobRole) {
     }
 
     const user = await Incubator.create({ company, email });
+    const userID = user._id;
+
+    const login = await Login.create({
+      userID,
+      userModel,
+      type,
+      email,
+      password,
+    });
+
+    const token = user.createJWT();
+
+    res.status(StatusCodes.CREATED).json({
+      user: {
+        id: user._id,
+        email: user.email,
+        name: user.company,
+        type: type,
+        img: user.img,
+      },
+      token,
+      location: user.company,
+    });
+  } else if (type == "Management") {
+    userModel = "Management";
+    if (!email || !password) {
+      throw new BadRequestError("please provide all values");
+    }
+
+    const userAlreadyExists = await Management.findOne({ email });
+    if (userAlreadyExists) {
+      throw new BadRequestError("Email already in used");
+    }
+
+    const user = await Management.create({ name, email });
     const userID = user._id;
 
     const login = await Login.create({
@@ -255,14 +285,15 @@ const updateUser = async (req, res) => {
     location,
     faculty,
     studentID,
-    specialization
+    specialization,
+    linkedinUrl,
   } = req.body;
 
   if (type == "Student") {
     if (!name || !email || !lastName || !nic) {
       throw new BadRequestError("please provide all values");
     }
-
+    console.log(linkedinUrl);
     const userAlreadyExists = await Student.findOne({ email });
 
     // const user = await Student.create({ name, email });
@@ -275,7 +306,8 @@ const updateUser = async (req, res) => {
       studentID: studentID,
       contactNo: contactNo,
       faculty: faculty,
-      specialization
+      specialization,
+      linkedinUrl,
     };
 
     const user = await Student.findOneAndUpdate({ _id: id }, data, {
@@ -301,7 +333,8 @@ const updateUser = async (req, res) => {
         contactNo: user.contactNo,
         faculty: user.faculty,
         studentID: user.studentID,
-        specialization: user.specialization
+        specialization: user.specialization,
+        linkedinUrl,
       },
       token,
       location: user.name,
@@ -322,7 +355,8 @@ const updateUser = async (req, res) => {
       address: address,
       department: department,
       jobRole: jobRole,
-      specializedAreas: specializedAreas,
+      specialization: specialization,
+      linkedinUrl,
     };
 
     const user = await Staff.findOneAndUpdate({ _id: id }, data, {
@@ -345,7 +379,8 @@ const updateUser = async (req, res) => {
         address: user.address,
         department: user.department,
         jobRole: user.jobRole,
-        specializedAreas: user.specializedAreas,
+        specialization: user.specialization,
+        linkedinUrl,
       },
       token,
       location: user.name,
@@ -372,7 +407,8 @@ const updateUser = async (req, res) => {
       company: company,
       jobTitle: jobTitle,
       graduatedYear: graduatedYear,
-      specializedAreas: specializedAreas,
+      specialization: specialization,
+      linkedinUrl,
     };
 
     const user = await Alumni.findOneAndUpdate({ _id: id }, data, {
@@ -396,7 +432,7 @@ const updateUser = async (req, res) => {
         company: user.company,
         jobTitle: user.jobTitle,
         graduatedYear: user.graduatedYear,
-        specializedAreas: specializedAreas,
+        specialization: specialization,
       },
       token,
       location: user.name,
@@ -415,6 +451,7 @@ const updateUser = async (req, res) => {
       nic: nic,
       email: email,
       location: location,
+      linkedinUrl,
     };
 
     const user = await Partner.findOneAndUpdate({ _id: id }, data, {
@@ -464,6 +501,39 @@ const updateUser = async (req, res) => {
       },
       token,
       location: user.company,
+    });
+  } else if (type === "Management") {
+    if (!name) {
+      throw new BadRequestError("please provide all values");
+    }
+    console.log("nic", nic);
+    const user = await Management.findOneAndUpdate(
+      { _id: id },
+      {
+        name,
+        email,
+        nic,
+        linkedinUrl,
+      },
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
+
+    const token = user.createJWT();
+
+    res.status(StatusCodes.CREATED).json({
+      user: {
+        id: user._id,
+        email: user.email,
+        name: user.name,
+        nic: user.nic,
+        type: type,
+        linkedinUrl,
+      },
+      token,
+      location: user.name,
     });
   }
 };

@@ -25,6 +25,7 @@ const accountTypeList = [
   { label: "Alumni", value: "Alumni" },
   { label: "Partner", value: "Partner" },
   { label: "Incubator", value: "Incubator" },
+  { label: "Management", value: "Management" },
 ];
 
 const partnerTypeList = [
@@ -35,8 +36,14 @@ const partnerTypeList = [
 const RegisterPage = () => {
   const navigate = useNavigate();
   const [values, setValues] = useState(initialState);
-  const { user, isLoading, showAlert, displayAlert, setupUser } =
-    useAppContext();
+  const {
+    user,
+    isLoading,
+    showAlert,
+    displayAlert,
+    setupUser,
+    logoutUser,
+  } = useAppContext();
 
   const handleChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
@@ -61,14 +68,7 @@ const RegisterPage = () => {
         return;
     }
 
-    // console.log(name);
-    // console.log(email);
-    // console.log(password);
-    // console.log(type);
-    // console.log(department);
-    // console.log(jobRole);
-    // console.log(jobTitle);
-    // console.log(partnertype);
+    
 
     if (type === "Student") {
       if (!email || !password || !name) {
@@ -125,13 +125,25 @@ const RegisterPage = () => {
         currentUser,
         alertText: "User Created! Redirecting...",
       });
+    } else if (type === "Management") {
+      if (!email || !password || !name) {
+        displayAlert();
+        return;
+      }
+
+      const currentUser = { email, name, password, type};
+      setupUser({
+        currentUser,
+        alertText: "User Created! Redirecting...",
+      })
     }
   };
 
   useEffect(() => {
+    logoutUser()
     if (user) {
       setTimeout(() => {
-        navigate("/");
+        navigate("/login");
       }, 3000);
     }
   }, [user, navigate]);
