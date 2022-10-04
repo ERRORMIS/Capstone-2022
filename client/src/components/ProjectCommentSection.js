@@ -19,19 +19,7 @@ const ProjectCommentSection = (props) => {
 
               {comment.name }
 
-
-              {comment.name }
-
-
-              {comment.name }
-
-
-              {comment.name }
-
               {comment.author.userID?.name}
-
-
-
 
             </Col>
             <Col xs={6} className="comment-time">
