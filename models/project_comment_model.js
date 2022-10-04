@@ -6,6 +6,9 @@ const ProjectComment = new mongoose.Schema({
     ref: "Login",
     required: true,
   },
+  name: {
+    type: String,
+  },
   body: {
     type: String,
     required: true,

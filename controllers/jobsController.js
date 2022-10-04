@@ -4,11 +4,16 @@ import { BadRequestError, NotFoundError } from "../errors/index.js";
 import checkPermissions from "../utils/checkPermissions.js";
 import mongoose from "mongoose";
 import moment from "moment";
+
 import login_model from "../models/login_model.js";
 import ProjectComment from "../models/project_comment_model.js";
 import Student_model from "../models/student_model.js";
 import Alumni from "../models/alumni_model.js";
 import Staff from "../models/staff_model.js";
+import logService from "../services/logService.js";
+import Incubator_model from "../models/incubator_model.js";
+import Partner_model from "../models/partner_model.js";
+import Management_model from "../models/management_model.js";
 
 const createJob = async (req, res) => {
   const { title, owner, description, members } = req.body;
@@ -21,6 +26,11 @@ const createJob = async (req, res) => {
   }
   req.body.createdBy = req.user.userId;
   const job = await Job.create(req.body);
+  await logService.createProject({
+    authorName: owner,
+    projectId: job._id,
+    projectName: title,
+  });
   res.status(StatusCodes.CREATED).json({ job });
 };
 
@@ -55,9 +65,6 @@ const getAllJobs = async (req, res) => {
       createdBy: { $ne: req.user.userId },
     }).populate({
       path: "comments",
-      populate: {
-        path: "author",
-      },
     });
 
     // chain sort conditions for other jobs
@@ -88,9 +95,6 @@ const getAllJobs = async (req, res) => {
     const queryObjectForMyJobs = { ...queryObject, createdBy: req.user.userId };
     const myJobs = await Job.find(queryObjectForMyJobs).populate({
       path: "comments",
-      populate: {
-        path: "author",
-      },
     });
 
     const totalJobs = await Job.countDocuments(queryObjectForOtherJobs);
@@ -124,6 +128,12 @@ const updateJob = async (req, res) => {
     runValidators: true,
   });
 
+  await logService.updateProject({
+    authorName: owner,
+    projectId: jobId,
+    projectName: title,
+  });
+
   res.status(StatusCodes.OK).json({ updatedJob });
 };
 
@@ -137,9 +147,17 @@ const deleteJob = async (req, res) => {
   }
 
   checkPermissions(req.user, job.createdBy);
-
-  await job.remove();
-
+  try {
+    const user = await login_model.findById(req.user.userId);
+    console.log(user);
+    await job.remove();
+    await logService.deleteProject({
+      authorName: user.name,
+      projectName: job.title,
+    });
+  } catch (err) {
+    console.log(err);
+  }
   res.status(StatusCodes.OK).json({ msg: "Success! Job removed" });
 };
 
@@ -200,11 +218,34 @@ const addProjectComment = async (req, res) => {
     if (!job) {
       return res.status(400).json({ msg: "project not found" });
     } else {
+      console.log(req.user);
       const userId = req.user.userId;
       const user = await login_model.findById(userId);
-
+      let userProfile = null;
+      let userName = "unknown";
+      console.log("userid", user);
+      if (user.type == "Student") {
+        userProfile = await Student_model.findById(user.userID);
+        userName = userProfile.name;
+      } else if (user.type == "Staff") {
+        userProfile = await Staff.findById(user.userID);
+        userName = userProfile.name;
+      } else if (user.type == "Alumni") {
+        userProfile = await Alumni.findById(user.userID);
+        userName = userProfile.name;
+      } else if (user.type == "Partner") {
+        userProfile = await Partner_model.findById(user.userID);
+        userName = userProfile.name;
+      } else if (user.type == "Incubator") {
+        userProfile = await Incubator_model.findById(user.userID);
+        userName = userProfile.company;
+      } else if (user.type == "Management") {
+        userProfile = await Management_model.findById(user.userID);
+        userName = userProfile.name;
+      }
       const comment = await ProjectComment.create({
         author: user._id,
+        name: userName,
         body: req.body.body,
         time: moment().format("LLL"),
       });
@@ -241,6 +282,28 @@ const filterUsersByProjectRequirement = async (req, res) => {
   res.status(200).json({ students, alumni, staff });
 };
 
+const importProjects = async (req, res) => {
+  const projects = req.body.map((project) => {
+    project.createdBy = req.user.userId;
+    return project;
+  });
+  try {
+    const result = await Job.insertMany(projects);
+    res.status(200).json({ msg: "Successfully imported projects", result });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ msg: "Failed to import projects" });
+  }
+};
+
+const getAllMembers = async (req, res) => {
+  const students = await Student_model.find();
+  const alumni = await Alumni.find();
+  const staff = await Staff.find();
+
+  res.status(200).json({ students, alumni, staff });
+};
+
 export {
   createJob,
   deleteJob,
@@ -249,4 +312,6 @@ export {
   showStats,
   addProjectComment,
   filterUsersByProjectRequirement,
+  importProjects,
+  getAllMembers,
 };
