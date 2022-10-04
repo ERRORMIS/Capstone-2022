@@ -4,9 +4,9 @@ import { bootstrap } from "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./StaffContainer.css";
 import { Link, useNavigate } from 'react-router-dom'
-
+import linkedin from '../assets/images/linkedin.png'
 // export default class StaffContainer extends Component {
-const PartnerComponent = ({name,lastName,email, contactNo,partnerType,location,company,img,nic,graduatedYear }) => {
+const PartnerComponent = ({name,lastName,email, contactNo,partnerType,location,company,img,nic,graduatedYear, linkedinUrl }) => {
 
     const navigate = useNavigate();
     const toComponentB=(name, lastName, email,nic,contactNo,partnerType,location, new_img)=>{
@@ -18,7 +18,8 @@ const PartnerComponent = ({name,lastName,email, contactNo,partnerType,location,c
             contactNo: contactNo,
             partnerType: partnerType,
             location: location,
-            img: new_img
+            img: new_img,
+            linkedinUrl
         }});
     }
  
@@ -40,6 +41,10 @@ const PartnerComponent = ({name,lastName,email, contactNo,partnerType,location,c
                             <div className="row">
                             <h5><b>{name} {lastName}</b></h5>
                             <p>{email}</p>
+                            { linkedinUrl && <a href={linkedinUrl} target="_blank">
+                                <img className="linkedin-button" src={linkedin} />
+                              </a>
+                            }
                             {/* <p>{contactNo}</p> */}
                         </div>
                         </div>

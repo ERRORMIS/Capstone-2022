@@ -1,6 +1,7 @@
 import User from "../models/User.js";
 import { StatusCodes } from "http-status-codes";
 import { BadRequestError, UnAuthenticatedError } from "../errors/index.js";
+import bcrypt from "bcryptjs";
 
 import login_model from "../models/login_model.js";
 import Student from "../models/student_model.js";
@@ -8,6 +9,8 @@ import Staff from "../models/staff_model.js";
 import Alumni from "../models/alumni_model.js";
 import Partner from "../models/partner_model.js";
 import Incubator from "../models/incubator_model.js";
+import Management from "../models/management_model.js";
+import sendEmail from "../utils/email/sendEmail.js";
 
 const register = async (req, res) => {
   const { name, email, password } = req.body;
@@ -74,49 +77,49 @@ const updateUser = async (req, res) => {
   res.status(StatusCodes.OK).json({ user, token, location: user.location });
 };
 
-const forgotpassword = async (req, res, next) => {
-  const { email } = req.body;
-  try {
-    const user = await login_model.findOne({ email });
+// const forgotpassword = async (req, res, next) => {
+//   const { email } = req.body;
+//   try {
+//     const user = await login_model.findOne({ email });
 
-    if (!user) {
-      return next(new ErrorResponse("Email could not be sent ", 404));
-    }
+//     if (!user) {
+//       return next(new ErrorResponse("Email could not be sent ", 404));
+//     }
 
-    // const resetToken = user.getResetPasswordToken();
+//      const resetToken = user.getResetPasswordToken();
 
-    // await user.save();
+//      await user.save();
 
-    const resetUrl = `http://localhost:3000/passwordreset`;
+//     const resetUrl = `http://localhost:3000/passwordreset`;
 
-    const message = `
-        <h1>You have requested a passowrd reset</h1>
-        <p>Please go to this link to reset your password </p>
-        <a href =${resetUrl} clicktacking=off>${resetUrl}</a> `;
+//     const message = `
+//         <h1>You have requested a passowrd reset</h1>
+//         <p>Please go to this link to reset your password </p>
+//         <a href =${resetUrl} clicktacking=off>${resetUrl}</a> `;
 
-    //  try {
-    await sendEmail({
-      to: user.email,
-      subject: "Password Reset Request",
-      text: message,
-    });
+//     //  try {
+//     await sendEmail({
+//       to: user.email,
+//       subject: "Password Reset Request",
+//       text: message,
+//     });
 
-    res.status(200).json({ success: true, data: "Email sent" });
+//     res.status(200).json({ success: true, data: "Email sent" });
 
-    //  } catch (error) {
+//     //  } catch (error) {
 
-    user.resetPasswordToken = undefined;
-    user.resetPasswordExpire = undefined;
+//     user.resetPasswordToken = undefined;
+//     user.resetPasswordExpire = undefined;
 
-    await user.save();
+//     await user.save();
 
-    return next(new ErrorResponse("Email could not be send", 500));
-    //}
-  } catch (error) {
-    console.log(error);
-    next(error);
-  }
-};
+//     return next(new ErrorResponse("Email could not be send", 500));
+//     //}
+//   } catch (error) {
+//     console.log(error);
+//     next(error);
+//   }
+// };
 
 const resetpassword = async (req, res, next) => {
   const resetPasswordToken = crypto
@@ -170,7 +173,6 @@ const login_new = async (req, res) => {
   if (!isPasswordCorrect) {
     throw new UnAuthenticatedError("Invalid Credentials");
   }
-
   const token = user.createJWT();
 
   user.password = undefined;
@@ -192,7 +194,7 @@ const login_new = async (req, res) => {
         contactNo: get_user.contactNo,
         faculty: get_user.faculty,
         userLoginId: user._id,
-        specializedAreas: get_user.specializedAreas,
+        specialization: get_user.specialization,
       },
       token,
       location: get_user.name,
@@ -214,7 +216,7 @@ const login_new = async (req, res) => {
         department: get_user.department,
         jobRole: get_user.jobRole,
         userLoginId: user._id,
-        specializedAreas: get_user.specializedAreas,
+        specialization: get_user.specialization,
       },
       token,
       location: get_user.name,
@@ -237,7 +239,7 @@ const login_new = async (req, res) => {
         jobTitle: get_user.jobTitle,
         graduatedYear: get_user.graduatedYear,
         userLoginId: user._id,
-        specializedAreas: get_user.specializedAreas,
+        specialization: get_user.specialization,
       },
       token,
       location: get_user.name,
@@ -276,14 +278,65 @@ const login_new = async (req, res) => {
       token,
       location: get_user.name,
     });
+  } else if (user.type == "Management") {
+    const get_user = await Management.findOne({ email });
+
+    res.status(StatusCodes.OK).json({
+      user: {
+        id: get_user._id,
+        email: get_user.email,
+        name: get_user.name,
+        type: user.type,
+        userLoginId: user._id,
+        nic: get_user.nic,
+      },
+      token,
+      location: get_user.name,
+    });
   }
 };
 
-export {
-  register,
-  login,
-  updateUser,
-  forgotpassword,
-  resetpassword,
-  login_new,
+const resetPassword = async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    if (!email) {
+      return res
+        .status(200)
+        .json({ msg: "Please enter email", success: false });
+    }
+    const user = await login_model.findOne({ email });
+    if (!user) {
+      return res.status(200).json({ msg: "There is no account for this email.", success: false });
+    }
+
+    let generatedPassword = Math.random().toString(36).slice(2, 9);
+    console.log("generate password", generatedPassword);
+
+    // hashing password
+    const salt = await bcrypt.genSalt(10);
+    const hashPassword = await bcrypt.hash(generatedPassword, salt);
+
+    const updateUser = await login_model.findOneAndUpdate(
+      { email },
+      { password: hashPassword },
+      { new: true }
+    );
+
+    await sendEmail({
+      toEmail: email,
+      subject: "Reset Password",
+      password: generatedPassword,
+    });
+
+    res
+      .status(StatusCodes.OK)
+      .json({
+        msg: "Password successfully reset. New password sent your email.",
+        success: true,
+      });
+  } catch (error) {
+    console.log(error);
+  }
 };
+export { register, login, updateUser, resetpassword, login_new, resetPassword };

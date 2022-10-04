@@ -21,6 +21,10 @@ const AlumniSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
+    linkedinUrl: {
+      type: String,
+      default: "",
+    },
     contactNo: {
       type: String,
       default: "",
