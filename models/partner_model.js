@@ -21,6 +21,10 @@ const PartnerSchema = new mongoose.Schema(
         type: String,
         default: ''
     },
+    linkedinUrl: {
+        type: String,
+        default: "",
+      },
     contactNo: {
         type: String,
         default: ''
@@ -37,11 +41,7 @@ const PartnerSchema = new mongoose.Schema(
         type: String,
         default: ''
     },
-    // createdBy: {
-    //     type: mongoose.Types.ObjectId,
-    //     ref: 'User',
-    //     required: [true, 'Please provide user'],
-    //},
+
 },
     { timestamps: true }
 )

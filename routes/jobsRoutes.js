@@ -8,7 +8,9 @@ import {
   updateJob,
   showStats,
   addProjectComment,
-  filterUsersByProjectRequirement
+  filterUsersByProjectRequirement,
+  importProjects,
+  getAllMembers
 } from '../controllers/jobsController.js'
 
 router.route('/').post(createJob).get(getAllJobs)
@@ -19,5 +21,7 @@ router.route("/:projectId/post-comment").patch(addProjectComment)
 router
   .route("/filterUsersByProjectRequirement")
   .post(filterUsersByProjectRequirement);
+router.route("/import-projects-from-csv").post(importProjects);
+router.route("/get-all-members").get(getAllMembers);
 
 export default router

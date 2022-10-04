@@ -4,10 +4,11 @@ import { bootstrap } from "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./StaffContainer.css";
 import { Link, useNavigate } from 'react-router-dom'
+import linkedin from '../assets/images/linkedin.png';
 
 // export default class StaffContainer extends Component {
-const StudentComponent = ({name,lastName,email, contactNo,faculty,gender,company,img,nic,studentID }) => {
-
+const StudentComponent = ({name,lastName,email, contactNo,faculty,gender,company,img,nic,studentID, linkedinUrl }) => {
+    console.log(linkedinUrl)
     const navigate = useNavigate();
     const toComponentB=(name, lastName, email,nic,contactNo,faculty,gender, new_img,studentID)=>{
         navigate('/profile-list',{state:{  
@@ -20,6 +21,7 @@ const StudentComponent = ({name,lastName,email, contactNo,faculty,gender,company
             gender: gender,
             img: new_img,
             studentID: studentID,
+            linkedinUrl
         }});
     }
  
@@ -41,7 +43,10 @@ const StudentComponent = ({name,lastName,email, contactNo,faculty,gender,company
                             <div className="row">
                             <h5><b>{name} {lastName}</b></h5>
                             <p>{email}</p>
-                            {/* <p>{contactNo}</p> */}
+                            { linkedinUrl && <a href={linkedinUrl} target="_blank">
+                                <img className="linkedin-button" src={linkedin} />
+                              </a>
+                            }
                         </div>
                         </div>
                         <div class="col-md-2">

@@ -9,6 +9,7 @@ import PartnerComponent from "../../components/partner.component";
 import StudentComponent from "../../components/student.component";
 import { userTypesWithSpecialization } from '../../constants/constants';
 
+
 const initialState = {
   name: "",
   email: "",
