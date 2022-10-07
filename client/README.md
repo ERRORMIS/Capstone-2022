@@ -1,12 +1,3 @@
-# MIS
-
-#### Run The App Locally
-
-
-npm run install-dependencies
-
-- rename .env.temp to .env
-- setup values for - MONGO_URL, JWT_SECRET, JWT_LIFETIME
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
